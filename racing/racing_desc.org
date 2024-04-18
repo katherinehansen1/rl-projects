@@ -6,7 +6,7 @@
   - The game is a basic racing game where you have to turn and apply acceleration.
   - The goal of the game is to complete the race as quickly as possible.
 ** State space
-  The state space has 15 numbers in the following order:
+  The state space has 16 numbers in the following order:
   - the current of laps remaining
   - angle car is pointing
   - x,y position of the car

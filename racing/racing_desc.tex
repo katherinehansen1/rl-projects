@@ -1,4 +1,4 @@
-% Created 2024-04-18 Thu 01:43
+% Created 2024-04-18 Thu 01:46
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -26,17 +26,17 @@
 \begin{document}
 
 \section{Overview}
-\label{sec:org0975d0e}
+\label{sec:org1a86ace}
 \subsection{Environment}
-\label{sec:org921e6f7}
+\label{sec:org06a8bbb}
 \begin{itemize}
 \item The game is a single-agent environment.
 \item The game is a basic racing game where you have to turn and apply acceleration.
 \item The goal of the game is to complete the race as quickly as possible.
 \end{itemize}
 \subsection{State space}
-\label{sec:org14b6ef7}
-The state space has 15 numbers in the following order:
+\label{sec:orgb33e284}
+The state space has 16 numbers in the following order:
 \begin{itemize}
 \item the current of laps remaining
 \item angle car is pointing
@@ -45,21 +45,21 @@ The state space has 15 numbers in the following order:
 \item the x,y locations of the next 5 checkpoints
 \end{itemize}
 \subsection{Action space}
-\label{sec:orge959863}
+\label{sec:orgd5d0bea}
 The action space has 3 numbers in the following order:
 \begin{itemize}
 \item x,y target for where to aim the car (the car rotates up to 18 degrees per step)
 \item thrust (0 -- 100) the amount of thrust to apply forwards on the car
 \end{itemize}
 \subsection{Rewards}
-\label{sec:org5aefeb4}
+\label{sec:org2e8bdaa}
 \begin{itemize}
 \item -1 per time step
 \item +10000 for completing the race (see below)
 \item -10000 for failing the race (see below)
 \end{itemize}
 \subsection{Terminal States}
-\label{sec:org1aa68a0}
+\label{sec:orge65f9d5}
 The episodes ends in one of two ways:
 \begin{enumerate}
 \item Your car completes the race by finishing the final lap
