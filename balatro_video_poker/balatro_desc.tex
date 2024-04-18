@@ -1,0 +1,142 @@
+% Created 2024-04-08 Mon 18:32
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[margin=1.0in]{geometry}
+\author{Kevin James}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Kevin James},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.1 (Org mode 9.6.19)}, 
+ pdflang={English}}
+\begin{document}
+
+\section{Overview}
+\label{sec:orgd293114}
+\subsection{Environment}
+\label{sec:orge3ef2ec}
+\begin{itemize}
+\item The game is a single-agent environment.
+\item The game is played with a standard 52 card deck
+\item The goal of the game is to score as many points as possible
+\end{itemize}
+\subsection{State space}
+\label{sec:orgb70674d}
+\begin{itemize}
+\item Each turn, you will have 8 cards in your hand.
+\item At the start of the game, you will have 3 Discards and 4 Plays (discussed below)
+\item Each turn, you will use some of the cards.  New cards will be drawn from the remaining deck, and used cards are removed from the game.
+\end{itemize}
+\subsection{Action space}
+\label{sec:org897c33b}
+\begin{itemize}
+\item Each turn, you must use a Play or a Discard.
+\item If you Discard, you choose up to 5 cards.  They are removed from the game, and you get that many replacement cards drawn randomly from the deck.
+\item If you Play, the same thing happens, but in addition to discarding the chosen cards, the value of the chosen cards are added to your total (hand values are explained below).
+\end{itemize}
+\subsection{Rewards}
+\label{sec:orgbd35e0d}
+\begin{itemize}
+\item Each time you Play, the value of the hand is added to your total.
+\item Hand values are given by:
+\end{itemize}
+\begin{center}
+\begin{tabular}{lr}
+Hand & Value\\[0pt]
+\hline
+Straight Flush & 800\\[0pt]
+Four of a Kind & 420\\[0pt]
+Full House & 160\\[0pt]
+Flush & 140\\[0pt]
+Straight & 120\\[0pt]
+Three of a Kind & 90\\[0pt]
+Two Pair & 40\\[0pt]
+Pair & 20\\[0pt]
+High Card & 5\\[0pt]
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item To see a description of each hand, please see \href{https://www.cardplayer.com/rules-of-poker/hand-rankings}{this link}.
+\item The hand value is just the highest valued hand listed above. For example, playing 4 Jacks gives you just 420, it does not also count as a 3-of-a-kind in addition.
+\item Please note, you can play fewer than 5 cards (for example, if you play 4 cards, a Two Pair or four of a kind is possible).
+\item However, hands such as flushes and straights require 5 cards.
+\end{itemize}
+\subsection{Terminal State}
+\label{sec:org7e8bddf}
+\begin{itemize}
+\item An episode ends when you have no Plays left (Remaining discards are useless since they cannot give any reward).
+\end{itemize}
+\section{Assignment}
+\label{sec:orgb51db2e}
+\begin{enumerate}
+\item Write up the environment and test that it is working.
+\item Use RLlib to get as high an expected score as possible with 1 Play and 1 Discard.
+\item Use RLlib to get as high an expected score as possible with 4 Plays and 3 Discards.
+\item Optional:  Try to solve the Advanced version described below.
+\end{enumerate}
+\subsection{Advanced Rules}
+\label{sec:org625d069}
+\begin{itemize}
+\item The only difference in the advanced rules is in the rewards.  First, the reward values are split between Chips and Multipliers.  Here is the advance payout table:
+\end{itemize}
+\begin{center}
+\begin{tabular}{lrr}
+Hand & Chips & Multiplier\\[0pt]
+\hline
+Straight Flush & 100 & 8\\[0pt]
+Four of a Kind & 60 & 7\\[0pt]
+Full House & 40 & 4\\[0pt]
+Flush & 35 & 4\\[0pt]
+Straight & 30 & 4\\[0pt]
+Three of a Kind & 30 & 3\\[0pt]
+Two Pair & 20 & 2\\[0pt]
+Pair & 10 & 2\\[0pt]
+High Card & 5 & 1\\[0pt]
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item You receive Chips x Multiplier, which by default will result in the same payoffs as the regular table.
+\item However, in the advanced version, scored cards add to the Chips.
+\item A scored card is any card needed for the hand.  For example, if you play 4xJacks and an Ace, The 4 Jacks are scored for the Four of a Kind, while the Ace is not scored as it is not needed for the hand.
+\item Scored cards are worth their blackjack value (2-10 are worth their number, J,Q,and K are worth 10 each, and Aces are worth 11.
+\item The effect of this should be that it is optimal to bias yourself towards higher ranked cards.
+\end{itemize}
+\subsection{Advanced Scoring Examples}
+\label{sec:org04a70a0}
+\begin{itemize}
+\item Hand 1
+\begin{center}
+\begin{tabular}{ll}
+You play: & AK832 of hearts\\[0pt]
+Hand type: & Flush\\[0pt]
+Chips total: & 35 + 11 + 10 + 8 + 3 + 2 = 69\\[0pt]
+Multiplier: & 4\\[0pt]
+Total Hand Score: & 69x4 = 276\\[0pt]
+\end{tabular}
+\end{center}
+\item Hand 2
+\begin{center}
+\begin{tabular}{ll}
+You play: & AAA82\\[0pt]
+Hand type: & Three of a Kind\\[0pt]
+Chips total: & 30 + 11 + 11 + 11 = 63\\[0pt]
+Multiplier: & 3\\[0pt]
+Total Hand Score: & 63x3 = 189\\[0pt]
+\end{tabular}
+\end{center}
+\end{itemize}
+\end{document}

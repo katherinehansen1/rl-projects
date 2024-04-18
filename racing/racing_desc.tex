@@ -1,0 +1,68 @@
+% Created 2024-04-18 Thu 01:43
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[margin=1.0in]{geometry}
+\author{Kevin James}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Kevin James},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.1 (Org mode 9.6.19)}, 
+ pdflang={English}}
+\begin{document}
+
+\section{Overview}
+\label{sec:org0975d0e}
+\subsection{Environment}
+\label{sec:org921e6f7}
+\begin{itemize}
+\item The game is a single-agent environment.
+\item The game is a basic racing game where you have to turn and apply acceleration.
+\item The goal of the game is to complete the race as quickly as possible.
+\end{itemize}
+\subsection{State space}
+\label{sec:org14b6ef7}
+The state space has 15 numbers in the following order:
+\begin{itemize}
+\item the current of laps remaining
+\item angle car is pointing
+\item x,y position of the car
+\item vx, vy velocity of the car
+\item the x,y locations of the next 5 checkpoints
+\end{itemize}
+\subsection{Action space}
+\label{sec:orge959863}
+The action space has 3 numbers in the following order:
+\begin{itemize}
+\item x,y target for where to aim the car (the car rotates up to 18 degrees per step)
+\item thrust (0 -- 100) the amount of thrust to apply forwards on the car
+\end{itemize}
+\subsection{Rewards}
+\label{sec:org5aefeb4}
+\begin{itemize}
+\item -1 per time step
+\item +10000 for completing the race (see below)
+\item -10000 for failing the race (see below)
+\end{itemize}
+\subsection{Terminal States}
+\label{sec:org1aa68a0}
+The episodes ends in one of two ways:
+\begin{enumerate}
+\item Your car completes the race by finishing the final lap
+\item Your car fails the race by not passing the next checkpoint for 100 steps
+\end{enumerate}
+\end{document}

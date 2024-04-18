@@ -1,0 +1,26 @@
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \usepackage[margin=1.0in]{geometry}
+* Overview
+** Environment
+  - The game is a single-agent environment.
+  - The game is a basic racing game where you have to turn and apply acceleration.
+  - The goal of the game is to complete the race as quickly as possible.
+** State space
+  The state space has 15 numbers in the following order:
+  - the current of laps remaining
+  - angle car is pointing
+  - x,y position of the car
+  - vx, vy velocity of the car
+  - the x,y locations of the next 5 checkpoints
+** Action space
+  The action space has 3 numbers in the following order:
+  - x,y target for where to aim the car (the car rotates up to 18 degrees per step)
+  - thrust (0 -- 100) the amount of thrust to apply forwards on the car
+** Rewards
+  - -1 per time step
+  - +10000 for completing the race (see below)
+  - -10000 for failing the race (see below)
+** Terminal States
+  The episodes ends in one of two ways:
+  1) Your car completes the race by finishing the final lap
+  2) Your car fails the race by not passing the next checkpoint for 100 steps
