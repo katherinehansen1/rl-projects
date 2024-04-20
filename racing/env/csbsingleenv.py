@@ -7,8 +7,8 @@ Original game: https://www.codingame.com/multiplayer/bot-programming/coders-stri
 """
 import math
 import gymnasium as gym
-from gym import spaces, logger
-from gym.utils import seeding
+from gymnasium import spaces, logger
+from gymnasium.utils import seeding
 import numpy as np
 import os
 
@@ -306,7 +306,7 @@ class CodersStrikeBackBase():
 
 
 class CodersStrikeBackSingle(CodersStrikeBackBase, gym.Env):
-    def __init__(self):
+    def __init__(self, seed=None):
         gym.Env.__init__(self)
         CodersStrikeBackBase.__init__(self)
 

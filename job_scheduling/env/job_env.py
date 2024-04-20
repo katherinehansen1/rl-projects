@@ -1,6 +1,6 @@
 import numpy as np
 import gymnasium as gym
-from gym import spaces
+from gymnasium import spaces
 from job_scheduling import JobEnv
 
 class JobEnvRL(JobEnv, gym.Env):

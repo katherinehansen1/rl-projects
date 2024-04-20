@@ -43,7 +43,7 @@ def calculate_sales(offers, intercept, slope):
 
 
 class OligopolyMarket(MultiAgentEnv):
-    def __init__(self):
+    def __init__(self, seed=None):
         super().__init__()
         self.n_firms = 5
         self._agent_ids = [f'firm_{i}' for i in range(self.n_firms)]
@@ -80,7 +80,7 @@ class OligopolyMarket(MultiAgentEnv):
     def get_observation(self):
         return list(reversed(self.price_history[-self.history_length:]))
 
-    def reset(self):
+    def reset(self, seed=None):
         self.price_history = [0]*self.history_length
         self.period = 0
         return self.get_observation(), {}
