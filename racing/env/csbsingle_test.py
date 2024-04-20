@@ -4,14 +4,11 @@ import time
 import numpy as np
 
 
-
 env = CodersStrikeBackSingle()
 fps =  env.metadata.get('video.frames_per_second')
 
-
 # Set pseudorandom seed for the getting the same game
 env.seed(1234)
-
 
 for n in range(10):
     state, _ = env.reset()
@@ -22,14 +19,14 @@ for n in range(10):
         if not render:
             break
         # Take action (simple policy)
-        targetX, targetY = state[5:7]
+        targetX, targetY = state[6:8]
         thrust = 100
         action = np.array([targetX, targetY, thrust], dtype=np.float32)
         # Do a game step
         state, reward, done, trunc, _ = env.step(action)
 
         # Print the state
-        
+
         print('---------- Tick %d' % i)
         print('Pod angle ', state[0])
         print('Pod (x,y): (%d, %d)' % (state[1], state[2]))
