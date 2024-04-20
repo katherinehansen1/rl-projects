@@ -1,0 +1,81 @@
+% Created 2024-04-20 Sat 00:44
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[margin=1.0in]{geometry}
+\author{Kevin James}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Kevin James},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.1 (Org mode 9.6.19)}, 
+ pdflang={English}}
+\begin{document}
+
+\section{Overview}
+\label{sec:orgd2f8ce6}
+\subsection{Environment}
+\label{sec:orgc38f51d}
+\begin{itemize}
+\item The game is a single-agent environment.
+\item The game is a complicated optimization where the agent must decide incoming jobs to accept and which to taken jobs to work on.
+\item The goal of the game earn the most possible money from completing jobs
+\end{itemize}
+\subsection{State space}
+\label{sec:org69b3ddf}
+\begin{itemize}
+\item The state space is the current day, as well as data for each job offer and currently taken job.
+\item Each job is represented by:
+\begin{enumerate}
+\item number of workers required
+\item complication probability (this determines how long the job takes to complete)
+\item soft deadline
+\item hard deadline
+\item payment
+\item expected length
+\item rate of pay (payment / (workers * expected length)
+\end{enumerate}
+\end{itemize}
+\subsection{Action space}
+\label{sec:org92fa457}
+The action space is 27 binary outputs:
+\begin{itemize}
+\item 7 binary outputs for which of the up to 7 incoming jobs to accept
+\item 20 binary outputs for the up to 20 jobs that can be accepted at a time.
+\item Note: you may want to use an action mask so superfluous actions are ignored when updating
+\end{itemize}
+\subsection{Rewards}
+\label{sec:org63b4d76}
+\begin{itemize}
+\item You receive the payment of any jobs completed on time
+\item Payment is reduced as the job passes the soft deadline
+\item You lose 0.3*payment for any jobs not completed by the hard deadline
+\end{itemize}
+\subsection{Terminal States}
+\label{sec:org6557c42}
+\begin{itemize}
+\item The episode ends after 100 days
+\end{itemize}
+\section{Instructions}
+\label{sec:org775029e}
+Full details of the rules can be found in the instructions folder
+\section{Software}
+\label{sec:org600a8b0}
+Software you can play (to get ideas for reward shaping and such) can be found in the software folder
+\section{Heuristic Pretraining}
+\label{sec:orgbebe71c}
+If you wish to do pretraining, let me know and I will add instructions on how to generate data from heuristics
+\end{document}

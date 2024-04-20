@@ -1,0 +1,72 @@
+% Created 2024-04-20 Sat 00:44
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[margin=1.0in]{geometry}
+\author{Kevin James}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Kevin James},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.1 (Org mode 9.6.19)}, 
+ pdflang={English}}
+\begin{document}
+
+\section{Overview}
+\label{sec:org78abbba}
+\subsection{Environment}
+\label{sec:org062ff90}
+\begin{itemize}
+\item The game is a multi-agent environment.
+\item The game is simple market where you have to decide on a price and quantity.
+\item The goal of the game is earn as much profit as possible across 80 periods.
+\end{itemize}
+\subsection{State space}
+\label{sec:org4e4bf58}
+\begin{itemize}
+\item The state space has 5 numbers representing the weighted average selling price the last 5 periods
+\item Note: you may want to create your own state space if you think other information will help your agent make better decisions
+\end{itemize}
+\subsection{Action space}
+\label{sec:orgb8fb324}
+The action space has 2 numbers in the following order:
+\begin{itemize}
+\item A price (between 0 and 17)
+\item A quantity (between 0 and 300)
+\end{itemize}
+\subsection{Rewards}
+\label{sec:orgdb270bc}
+\begin{itemize}
+\item price * number sold - cost(number sold)
+\end{itemize}
+\subsection{Terminal States}
+\label{sec:org121919a}
+\begin{itemize}
+\item The episode ends after 80 periods
+\end{itemize}
+\section{Environment Details}
+\label{sec:org5451ef6}
+\begin{itemize}
+\item There is a demand function: p = 17 - 0.01q.
+\item Each firm has the following cost structure: 1st 100 units cost 4 each, 2nd 100 cost 4.5 each, and last 100 cost 5 each.
+\item All prices are rounded down to the nearest cent (5.3235 -> 5.32)
+\item Firms are sorted from lowest to highest price.
+\item For each price, we calculate quantity demanded at the price: q = 1700 - 100p.
+\item We then subtract any quantity that has already been sold to other players.
+\item This demand is then allocated equally across all firms with the current lowest price, with firms receiving this price for each unit sold, until all demand is satisfied or firms run out of capacity/quantity.
+\item These firms are removed and the process continues until all demand is satisfied or all units are sold.
+\end{itemize}
+\end{document}
