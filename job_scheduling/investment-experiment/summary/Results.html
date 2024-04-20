@@ -1,0 +1,18 @@
+{{ block title }}
+Summary 
+{{ endblock }}
+{{ block content }}
+
+<table class = "table">
+    <thead>
+        <th>Payoff</th>
+        <th>Payoff (USD)</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{player.participant.payoff}}</td>
+            <td>{{player.participant.payoff_plus_participation_fee()}}</td>
+        </tr>
+    </tbody>
+</table>
+{{endblock}}

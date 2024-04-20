@@ -1,0 +1,17 @@
+import numpy as np
+import pandas as pd
+
+#Number of players
+num_players = 10
+
+#Create variables
+lower = [np.random.randint(0, 7) for _ in range(num_players)]
+upper =  [i+ np.random.randint(1, 7) for i in lower]
+payoff = [np.random.randint(i,j) for i, j in zip(lower, upper)]
+budget_required = [np.random.randint(1, 1000) for _ in range(num_players)]
+
+d = {'lower': lower, 'upper': upper, 'payoff': payoff, 'budget_required': budget_required}
+
+df = pd.DataFrame(d)
+
+df.to_csv('params.csv')

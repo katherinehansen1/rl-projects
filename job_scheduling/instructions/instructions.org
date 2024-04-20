@@ -1,0 +1,123 @@
+#+OPTIONS: reveal_title_slide:nil H:2 num:nil toc:nil \n:nil @:t ::t |:t -:t f:t *:t <:t reveal_single_file:t
+#+REVEAL-SLIDE-NUMBER: t
+#+REVEAL_TITLE_SLIDE:
+#+REVEAL_EXTRA_OPTIONS: navigationMode:'linear'
+#+HTML_HEAD: <style>.reveal { font-size: 200%; }</style>
+* Welcome
+  - This is an experiment in individual decision making.
+  - You will be paid based on your individual performance.
+  - Press "Space" to continue
+* The Big Idea
+** Payment
+  - In this experiment, you will take on the role of a contractor.
+  - To make money, you will accept job offers and complete them for clients.
+  - You will be paid for completing jobs.
+** Your Task
+  - The experiment will consist of 100 days.
+  - Each job needs multiple days of work to complete.
+  - However, jobs have deadlines and you only have a limited number of workers, so your task is to decide:
+    1) Which job offers to accept.
+    2) Which of your jobs to work on each day.
+* Job Offers
+** Overview
+  - Each day, you might receive some job offers.
+  - Some jobs will be more difficult and require more workers or time to complete.
+  - Others will have stricter deadlines or be more lucrative.
+  - You will have to weigh whether you should accept the job offer based on how busy you are and the attractiveness of the offer.
+  - Let's look more at these Job Offers.
+** Details
+#+BEGIN_EXPORT html
+<div class="r-stack">
+  <img class="fragment current-visible" src="offers_base.png" data-fragment-index="0">
+  <img class="fragment current-visible" src="offers_payment.png" data-fragment-index="1">
+  <img class="fragment current-visible" src="offers_workers.png" data-fragment-index="2">
+  <img class="fragment current-visible" src="offers_length.png" data-fragment-index="3">
+  <img class="fragment current-visible" src="offers_soft.png" data-fragment-index="4">
+  <img class="fragment current-visible" src="offers_hard.png" data-fragment-index="5">
+  <img class="fragment" src="offers_rate.png" data-fragment-index="6">
+</div>
+<div class="r-stack">
+  <p class="fragment current-visible" data-fragment-index="0">Each day, you will be offered a random number of job offers.<br>Above are three offers.  Each job will have an ID and a button to accept it.<br>Each job also has...</p>
+  <p class="fragment current-visible" data-fragment-index="1"><strong>Payment</strong><br> You will receive this amount if you finish the job on time</p>
+  <p class="fragment current-visible" data-fragment-index="2"><strong>Workers</strong><br> You need to use this many workers to work on the job</p>
+  <p class="fragment current-visible" data-fragment-index="3"><strong>Expected Time</strong><br> How long the job will take. You are shown both the average number of days required, as well as a range if you are lucky or unlucky.</p>
+  <p class="fragment current-visible" data-fragment-index="4"><strong>Soft Deadline</strong><br>If the job is not complete within this many days, your payment for the job will reduce.</p>
+  <p class="fragment current-visible" data-fragment-index="5"><strong>Hard Deadline</strong><br>If the job is not complete within this many days, you will receive 0 payment and lose some money as a penalty.</p>
+  <p class="fragment" data-fragment-index="6"><strong>Rate</strong><br>The average amount of money (in cents) produced each day by a worker on this job.<br>For the first job: 5.3 Cents x 2 Workers x 3.8 Days = $0.40</p>
+</div>
+#+END_EXPORT
+* Assigning Workers
+** Rules
+  - Once you've accepted jobs, you must decide how to assign your workers across them.
+  - To make any progress on a job, you must assign the full worker count required for the job.
+** Working
+#+BEGIN_EXPORT html
+<div class="r-stack">
+  <img class="fragment current-visible" src="jobs_base.png" data-fragment-index="0" width="600">
+  <img class="fragment current-visible" src="jobs_assigned.png" data-fragment-index="1" width="600">
+  <img class="fragment current-visible" src="jobs_first.png" data-fragment-index="2" width="600">
+  <img class="fragment current-visible" src="jobs_checked.png" data-fragment-index="3" width="600">
+  <img class="fragment current-visible" src="jobs_checked_assigned.png" data-fragment-index="4" width="600">
+  <img class="fragment" src="jobs_checked.png" data-fragment-index="5" width="600">
+</div>
+<div class="r-stack">
+  <p class="fragment current-visible" data-fragment-index="0">This is your entire screen, with both Job Offers and Current Jobs</p>
+  <p class="fragment current-visible" data-fragment-index="1">Notice you have 10 available workers to assign.<br>This will be the same every day.</p>
+  <p class="fragment current-visible" data-fragment-index="2">Suppose we want to work on the first job today.  Let's see what happens.</p>
+  <p class="fragment current-visible" data-fragment-index="3">By clicking the checkbox, we are set to work on the job today.</p>
+  <p class="fragment current-visible" data-fragment-index="4">Notice the number of assigned workers increases by the job's required workers.</p>
+  <p class="fragment current-visible" data-fragment-index="5">When the day ends, you will make progress on all the jobs you have selected to work on.</p>
+  <p class="fragment" data-fragment-index="6">In this scenario, you should work on all your jobs, since you have enough workers and using them costs nothing.</p>
+</div>
+#+END_EXPORT
+** Limits
+#+BEGIN_EXPORT html
+<img src="limited_jobs.png" width="600">
+<div class="r-stack">
+  <p class="fragment current-visible" data-fragment-index="0">In this example, you don't have enough workers to work on all your jobs, so you'll have to leave some inactive today and not make progress.</p>
+  <p class="fragment" data-fragment-index="1">Notice that because 6/10 workers are currently assigned, the job requiring 5 workers is highlighted red and cannot be worked on.</p>
+</div>
+#+END_EXPORT
+* Completing Jobs
+** Overview
+  - When you work on a job, you will make some progress on it.
+  - The amount of progress is random, but you will always complete at least 10% of the job each day you work on it.
+  - Some jobs will tend to progress faster than others.
+** Rules
+  - The Length of the job estimates how long it will take on average.
+  - There is more than a 90% chance the job will complete within the Range values.
+  - However, there is always a chance (no matter how small) that a job will complete in just 1 day.
+  - Conversely, any job can also require the full 10 days to complete (10% progress each day).
+** Example
+#+BEGIN_EXPORT html
+<div class="r-stack">
+  <img class="fragment current-visible" src="progress_progress.png" data-fragment-index="0" width="600">
+  <img class="fragment current-visible" src="progress_length.png" data-fragment-index="1" width="600">
+  <img class="fragment" src="progress_graph.png" data-fragment-index="2" width="600">
+</div>
+<div class="r-stack">
+  <p class="fragment current-visible" data-fragment-index="0">You can see each jobs current progress and the progress made the past day (if any).</p>
+  <p class="fragment current-visible" data-fragment-index="1">The length and range estimates are updated as you make progress.</p>
+  <p class="fragment current-visible" data-fragment-index="2">You can also see all the information in these graphs.</p>
+  <p class="fragment" data-fragment-index="3">They show the Range and Length in black and blue.<br>They also show the deadlines in orange and red.</p>
+</div>
+#+END_EXPORT
+* Payment Penalties
+** Overview
+  - If you finish the job on time (before the Soft Deadline), you receive full payment.
+  - If you finish the job late (after the Soft Deadline), you receive partial payment.
+  - If you do not finish the job by the Hard Deadline, you receive no pay and must further pay a penalty.
+** Details
+  - For each day after the Soft Deadline, the payment decreases by 15%.
+  - Once the Hard Deadline passes, you fail the job and it will cost you 20% of the original payment.
+  - Let's see an example.
+** Example
+  - Suppose a job pays $1.00 if completed on time.
+  - If you complete it 1 day after the Soft Deadline, you receive $1.00 - $0.15 = $0.85.
+  - If you complete it 2 days after the Soft Deadline, you receive $1.00 - $0.30 = $0.70.
+  - If you do not complete it by the Hard Deadline, you receive $0 and lose $0.20, regardless of how close you were to finishing.
+* Review
+  - You must decide which job offers to accept.
+  - You must decide which of your current jobs to work on.
+  - You are paid for completed jobs, and penalized for ones you fail to complete.
+  - Some jobs will be better than others, so you will have to decide whether an offered job is worth accepting.

@@ -1,0 +1,145 @@
+{{ block content }}
+<div id = "header">
+    <table class = "table"> 
+        <tr>
+            <th>{{player.date}}</th>
+            <th>Period: {{player.round_number}}</th>
+            <th>Next Period in: <span id = "time-left"></span></th>
+            <th>Total Earnings: {{payoff_usd}}</th>
+            <!-- EL BUDGET SE RECARGA CADA ROUND ? -->
+            <th id = "budget">Budget: {{player.participant.budget}} </th>
+            <th>Periods remaining: {{periods_remain}}</th>
+        </tr>
+    </table>
+</div>
+<hr>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-available-tab" data-bs-toggle="tab" data-bs-target="#nav-available" type="button" role="tab" aria-controls="nav-available" aria-selected="true">Available Projects</button>
+        <button class="nav-link" id="nav-past-tab" data-bs-toggle="tab" data-bs-target="#nav-past" type="button" role="tab" aria-controls="nav-past" aria-selected="true">Past Projects</button>
+        <button class="nav-link" id="nav-current-tab" data-bs-toggle="tab" data-bs-target="#nav-current" type="button" role="tab" aria-controls="nav-current" aria-selected="true">Current Projects</button>
+    </div>
+</nav>
+
+  <div class="tab-content" id="nav-myTabContent">
+    <div class="tab-pane fade show active" id="nav-available" role="tabpanel" aria-labelledby="nav-available-tab">
+ <table class = "table">
+         <thead>
+      <tr>
+    <th>ID</th>
+      <th>Required Budget</th>
+      <th>Payoff Range</th>
+      <th>Required Number of Periods</th>
+      <th>Remaining Time to Accept</th>
+      <th>Start Button</th>
+      </thead>
+    </tr>
+    {{for proj in available_projects }}
+    <tr>
+        <td>{{proj.project_id}}</td>
+        <td> {{proj.budget_required}}  </td>
+        <td> [{{proj.payoff_lower}} -  {{proj.payoff_upper}}] </td>
+        <td> {{proj.time_required_c}}    </td>
+        <td> {{proj.time_remaining}}</td>
+        <td>
+            <button id = button{{proj.project_id}} type = "button" class = "btn btn-primary off" onclick="liveSend({'project':'{{proj.project_id}}'})" value = {{proj.budget_required}}>Start</button> 
+        </td>
+    {{endfor}}
+  </table>
+    </div>
+
+    <div class="tab-pane fade" id="nav-past" role="tabpanel" aria-labelledby="nav-past-tab">
+<table class = "table">
+         <thead>
+      <tr>
+      <th>Required Budget</th>
+      <th>Payoff Range</th>
+      <th>Required Number of Periods</th>
+      <th>Actual Profit</th>
+      </thead>
+    </tr>
+    {{for proj in past_projects}}
+    <tr>
+        <td>  {{proj.budget_required }}  </td>
+        <td>   [{{proj.payoff_lower}} -  {{proj.payoff_upper}}]     </td>
+        <td>   {{proj.time_required_c}}   </td>
+        <td>   {{proj.payoff}}    </td>
+    </tr>
+    {{endfor}}
+  </table>
+</div>
+    <div class="tab-pane fade" id="nav-current" role="tabpanel" aria-labelledby="nav-current-tab">
+ <table class = "table">
+         <thead>
+      <tr>
+      <th>Required Budget</th>
+      <th>Payoff Range</th>
+      <th>Required Number of Periods</th>
+      <th>Remaining Time</th>
+      </thead>
+    </tr>
+    {{for proj in current_projects }}
+    <tr>
+        <td> {{proj.budget_required}}  </td>
+        <td> [{{proj.payoff_lower}} -  {{proj.payoff_upper}}] </td>
+        <td> {{proj.time_required_c}}   </td>
+        <td> {{proj.time_required_var}} </td>
+    </tr>
+      {{ endfor }}
+  </table>
+</div>
+  </div>
+<!--
+<div class="alert alert-warning alert-dismissible d-flex align-items-center fade show">
+    <i class="bi-exclamation-triangle-fill"></i>
+    <strong class="mx-2">Warning!</strong> You don't have enough budget to start this project.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+-->
+<style>
+    #header{
+        top: 0px;
+    }
+    .otree-timer {
+            display: none;
+        }
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+
+<script> 
+    function liveRecv(data) {
+        if (data.status === 1) {
+            document.getElementById('budget').innerHTML = 'Budget: ' + data.new_budget;
+            project_id = data.project_id
+            // Get the button based on the project
+            const project_button = document.getElementById('button' + project_id) 
+            project_button.style.backgroundColor= data.color;
+            project_button.innerHTML = 'In Progress ...';
+            project_button.classList.add("started");
+            project_button.classList.remove("off");
+        } else{
+            //get all buttons that are off
+            const btn = document.getElementsByClassName("btn btn-primary off");
+            // go throught the list and change the color of each element to grey.
+            for (let i = 0; i < btn.length; i++){
+                //btn[i].classList.add('no_budget')
+	            btn[i].style.backgroundColor = data.color;
+            }
+           
+        } 
+    }
+    
+    // Clock 
+    let customTimerEle = document.getElementById('time-left');
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        $('.otree-timer__time-left').on('update.countdown', function (event) {
+            customTimerEle.innerText = event.offset.hours + ":" +event.offset.minutes + ":" + event.offset.seconds;
+        });
+    });
+</script>
+{{ endblock }}
