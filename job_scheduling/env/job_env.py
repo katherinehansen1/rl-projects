@@ -40,9 +40,7 @@ class JobEnvRL(JobEnv, gym.Env):
         super().step(job_acceptances, work_actions, record=False)
         reward = self.total_payment - self.prev_pay
         self.prev_pay = self.total_payment
-        if self.current_day >= self.n_days:
-            return
-        done = self.current_day >= self.n_days
+        done = self.current_day > self.n_days
         truncated = False
         return self.get_observation(), reward, done, truncated, {}
 
