@@ -59,26 +59,24 @@ class OligopolyMarket(MultiAgentEnv):
             spaces.Box(low=0,high=intercept),
             spaces.Box(low=0,high=300)
         ))
-        self.action_space = spaces.Dict({
-            agent_id : self.ind_action_space
-            for agent_id in self._agent_ids
-        })
 
         self.ind_observation_space = spaces.Box(
             low=0,
             high=intercept,
             shape=(self.history_length,)
         )
-        self.observation_space = spaces.Dict({
-            agent_id : self.ind_observation_space
-            for agent_id in self._agent_ids
-        })
+        self.action_space = self.make_agent_dictionary(self.ind_action_space)
+        self.observation_space = self.make_agent_dictionary(self.ind_observation_space)
 
         self.costs = [4.0]*100 + [4.5]*100 + [5.0]*100
         self.sales_calc = partial(calculate_sales, intercept=intercept, slope=slope)
 
+    def make_agent_dictionary(self, res):
+        return {agent_id: res for agent_id in self._agent_ids}
+
     def get_observation(self):
-        return list(reversed(self.price_history[-self.history_length:]))
+        price_history = list(reversed(self.price_history[-self.history_length:]))
+        return self.make_agent_dictionary(price_history)
 
     def reset(self, seed=None):
         self.price_history = [0]*self.history_length
@@ -105,9 +103,11 @@ class OligopolyMarket(MultiAgentEnv):
 
         rewards = self.get_rewards(profits)
         done = self.period == self.n_periods
-        truncated = done
+        dones = self.make_agent_dictionary(done)
+        dones['__all__'] = done
+        truncated = dones
         info = {}
-        return self.get_observation(), rewards, done, truncated, info
+        return self.get_observation(), rewards, dones, truncated, info
 
     def get_evaluation_reward(self, profits):
         return profits
