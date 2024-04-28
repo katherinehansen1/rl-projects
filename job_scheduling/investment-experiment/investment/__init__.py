@@ -1,9 +1,12 @@
-from datetime import datetime, timedelta
-import statistics
+from datetime import datetime
 from otree.api import *
 import random
 import os
 import time
+from . import job_env
+import csv
+import copy
+
 doc = """
 """
 random.seed(1234)
@@ -13,180 +16,209 @@ time.tzset()
 class C(BaseConstants):
     NAME_IN_URL = 'chapman'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 20
+    #! The number of rounds can only be set here: check otree observation: https://www.otreehub.com/forum/193/
+    NUM_ROUNDS = 100
+    DEFAULT_START_DELAY = 5
+
+
+def creating_session(subsession):
+    if subsession.round_number == 1:
+        session = subsession.session
+        with open('./test_jobs.csv', mode='r') as file:
+            csv_reader = csv.DictReader(file)
+            session.n_days = session.config['max_rounds']
+            session.jobs = [[] for _ in range(session.config['max_rounds']+1)]
+            session.workers = session.config['workers']
+            session.parts = session.config['parts']
+            session.day_length = session.config['round_length']
+            session.accumulate_time = session.config['accumulate_time']
+            for row in csv_reader:
+                progression = string_to_int_list(row['Progression'])
+                job = job_env.Job(name=row['Name'],
+                                  reqs=int(row['Workers']),
+                                  parts=session.parts,
+                                  complication=float(row['Complication Probability']),
+                                  soft_deadline=int(row['Soft Deadline']),
+                                  hard_deadline=int(row['Hard Deadline']),
+                                  payment=int(row['Payment'])*session.config['pay_scale_factor'],
+                                  progression=progression,
+                                  late_penalty=session.config['late_penalty'],
+                                  fail_penalty=session.config['fail_penalty']
+                                )
+                day=int(row['Day'])
+                session.jobs[day-1].append(job)
+
+        for player in subsession.get_players():
+            player.participant.env = job_env.JobEnv(copy.deepcopy(session.jobs),
+                                                    session.n_days,
+                                                    session.workers,
+                                                    worker_pay=session.config['worker_pay'])
+        if 'initial_date' in session.config:
+            initial_date = session.config['initial_date']
+            initial_hour = session.config['initial_hour']
+            format = "%Y-%m-%d %H:%M:%S"
+            start = datetime.strptime(initial_date + ' ' + initial_hour, format)
+            start = start.timestamp()
+        else:
+            start = time.time() + C.DEFAULT_START_DELAY
+        session.start_time = start
+        for player in subsession.get_players():
+            player.participant.expiry = session.start_time + session.day_length
+
+def get_seconds_until_start(player):
+    session = player.session
+    return session.start_time - time.time()
+
+def get_period_time_seconds(player):
+    participant = player.participant
+    return participant.expiry - time.time()
+
+def string_to_int_list(s):
+    return list(map(int, s.split(',')))
+
 class Subsession(BaseSubsession):
     pass
 
-def creating_session(subsession):
-    initial_date = subsession.session.config['initial_date']
-    initial_hour = subsession.session.config['initial_hour']
-    period_length = subsession.session.config['PERIOD_LENGTH']
-    format = "%Y-%m-%d %H:%M:%S"
-    start = datetime.strptime(initial_date + ' ' + initial_hour, format)
-    final = datetime.now()
-    for player in subsession.get_players():
-            for round in range(1, C.NUM_ROUNDS + 1): 
-            # the second difference is the time that page 0 exists
-                    player.start_time = start.timestamp()
-                    first_dif = final + timedelta(minutes = period_length)*round
-                    second_dif = start.timestamp() - datetime.now().timestamp()
-                    player.in_round(round).participant.final_time = first_dif.timestamp() + second_dif 
-                    player.in_round(round).final_time = first_dif.timestamp() + second_dif 
-                    player.participant.expiry = final.timestamp() + player.start_time - datetime.now().timestamp()#span multiple pages. Including the time of the 
-        
-            if subsession.round_number == 1:  
-                #TODO: make the code to read a csv file for the variables
-                player.participant.budget = 1000
-                for round in range(1, C.NUM_ROUNDS + 1):
-                    # How many projects will the person receive this round
-                    num_projects = random.randint(0, 2) #read.csv(num projec)
-                    for i in range(1, num_projects + 1):
-                        lower = random.randint(0, 7)
-                        upper = lower + random.randint(1, 7)
-                        payoff = random.randint(lower, upper)
-                        final_round = random.randint(round, C.NUM_ROUNDS)
-                        time_required = random.randint(1, 5)
-                        Project.create(
-                                project_id = str(round) + "-" + str(i),
-                                player = player.in_round(round), 
-                                payoff_lower = lower, 
-                                payoff_upper = upper, 
-                                payoff = payoff,
-                                time_required_c = time_required,
-                                time_required_var = time_required,
-                                initial_round = round, 
-                                budget_required = random.randint(10, 100),
-                                final_round = final_round,
-                                time_remaining = final_round - round,
-                                invest = False
-                        ) 
 class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-   final_time = models.FloatField()
-   start_time = models.FloatField()
-   invest = models.BooleanField(blank = True)
-   budget = models.IntegerField()
-   date = models.StringField()
-   
-class Project(ExtraModel):
-    player = models.Link(Player)
-    project_id = models.StringField()
-    payoff_lower = models.StringField()
-    payoff_upper = models.StringField()
-    payoff = models.IntegerField()
-    #Time required for building the project once choosen.
-    time_required_c = models.IntegerField()
-    time_required_var = models.IntegerField()
-    #time remaining for choosing the project
-    time_remaining = models.IntegerField()
-    budget_required = models.IntegerField()
-    initial_round = models.IntegerField()
-    final_round = models.IntegerField()
-    invest = models.BooleanField()
-    round_selected = models.IntegerField()
-    
-# PAGES
-@staticmethod
-def get_timeout_seconds0(player):
-    return player.start_time - datetime.now().timestamp()
+    offer_actions = models.StringField(blank=True)
+    work_actions = models.StringField(blank=True)
+
+    @property
+    def player_id(self):
+        return self.participant.id_in_session
 
 class FrontPage(Page):
+    timer_text = 'The experiment will start in:'
+    get_timeout_seconds = get_seconds_until_start
 
-    timer_text = 'The activity will start in:'
-    
-    get_timeout_seconds= get_timeout_seconds0
     @staticmethod
     def is_displayed(player: Player):
-        return player.start_time > datetime.now().timestamp()
-        
-# Creating session 
-@staticmethod
-def get_timeout_seconds1(player):
-    return player.final_time - datetime.now().timestamp()
-
-@staticmethod
-def live_method(player: Player, data):
-    # Get Project
-    project = Project.filter(project_id = data['project'], player = player.in_round(int(data['project'][0])))[0] 
-    new_budget = player.participant.budget - project.budget_required
-    if new_budget >= 0 and project.invest == False:
-        player.participant.budget = new_budget #this is only if the budget is accumulativo
-        #player.participant.budget = new_budget
-        project.invest = True
-        project.round_selected = player.round_number
-        player.invest = True
-        return {player.id_in_group: {"new_budget": new_budget, "status": 1, "color": "green", "project_id": project.project_id}}
-    else:
-        return {player.id_in_group: {"error": 1, "project_id": project.project_id, "color": "grey"}}
+        return get_seconds_until_start(player) > 0
 
 class Investment(Page):
-    
-    live_method = live_method
-    form_model = "player" 
-    
-    get_timeout_seconds = get_timeout_seconds1
- 
-    
+    form_model = "player"
+    form_fields = ['offer_actions', 'work_actions']
+    @staticmethod
+    def js_vars(player):
+        participant = player.participant
+        env = participant.env
+        jobs = env.jobs
+        jobs = sorted(jobs, key=lambda x:(max(0,x.soft_deadline_remaining()), x.hard_deadline_remaining()))
+        job_dict = [{'name':j.name,
+                     'lengthRange':[j.lower_length(), j.upper_length()],
+                     'pastSoft':j.is_late(),
+                     'expectedLength':j.expected_length(),
+                     'hardDeadline': j.hard_deadline_remaining(),
+                     'softDeadline': j.soft_deadline_remaining()}
+         for j in jobs]
+        return dict(
+            workers=player.session.workers,
+            jobs=job_dict
+        )
+
     @staticmethod
     def vars_for_template(player):
-        past_projects = []
-        available_projects = []
-        current_projects = []
-        player.date = datetime.strftime(datetime.now(), "%b %d, %Y")
-        for round in range(1, C.NUM_ROUNDS + 1):
-            for p in Project.filter(player = player.in_round(round)):
-                if ((p.initial_round <= player.round_number and p.final_round >= player.round_number) and p.invest == False):
-                    available_projects.append(p)
-                    
-                if p.invest == True and p.time_required_var <= 0:
-                    print(f'round_number: {player.round_number} final_round {p.final_round}')
-                    past_projects.append(p)
-                
-                if p.time_required_var > 0 and p.invest == True:
-                    current_projects.append(p)
-       # Add current projects that pay to players payment 
-        player.participant.payoff = sum([p.payoff for p in past_projects])
-        
-        # If the round is the one in which the project stop building, then give that money back
-        player.participant.budget = player.participant.budget + sum([p.budget_required for p in past_projects if (p.round_selected + p.time_required_c +1) == player.round_number])
-        
+        participant = player.participant
+        env = participant.env
+        offers_strs = [job_env.common_job_str(job) for job in env.offers]
+
+        job_strs = []
+        ended_strs = []
+        danger_bools = []
+        if env.history.history:
+            hist = env.history.history[-1]
+            old_jobs = hist.jobs
+            old_job_actions = hist.job_actions
+            for job, worked in zip(old_jobs, old_job_actions):
+                if not job.is_ended():
+                    s = job_env.common_job_str(job)
+                    parts_completed_this_day = job.last_progress() * worked
+                    (cur, last) = job_env.progress_str(job, parts_completed_this_day)
+                    s['progress_cur'] = cur
+                    s['progress_last'] = last
+                    s['status'] = ''
+                    s['danger'] = job.is_late() or job.hard_deadline_remaining()==1
+                    job_strs.append((max(0,job.soft_deadline_remaining()), job.hard_deadline_remaining(), s))
+            new_jobs = hist.get_taken_jobs()
+            for job in new_jobs:
+                s = job_env.common_job_str(job)
+                (cur, last) = job_env.progress_str(job, 0)
+                s['progress_cur'] = cur
+                s['progress_last'] = last
+                s['status'] = "New"
+                s['danger'] = job.is_late() or job.hard_deadline_remaining()==1
+                job_strs.append((max(0,job.soft_deadline_remaining()), job.hard_deadline_remaining(), s))
+            job_strs = sorted(job_strs, key=lambda x:(x[0], x[1]))
+            job_strs = [x[2] for x in job_strs]
+
+            ended_jobs = hist.ended
+            ended_actions = hist.ended_actions
+            for job, worked in zip(ended_jobs, ended_actions):
+                s = job_env.common_job_str(job)
+                parts_completed_this_day = job.last_progress() * worked
+                (cur, last) = job_env.progress_str(job, parts_completed_this_day)
+                s['progress_cur'] = cur
+                s['progress_last'] = last
+                s['status'] = 'Failed' if job.failed else 'Completed'
+                ended_strs.append(s)
         return dict(
-           periods_remain = C.NUM_ROUNDS - player.round_number, 
-            available_projects = available_projects,
-            current_projects = current_projects,
-            past_projects = past_projects,
-            #payoff_usd = cu(player.participant.payoff).to_real_world_currency(player.session),
-            # If I want to show payoff in usd
-            payoff_usd = player.participant.payoff
+            offer_strs = offers_strs,
+            job_strs = job_strs,
+            ended_strs = ended_strs,
+            danger_bools = danger_bools,
+            payoff_usd = f"${participant.env.total_payment/100:.2f}",
+            workers = player.session.workers,
+            allow_submit = player.session.config['allow_submit']
         )
-    
+    get_timeout_seconds = get_period_time_seconds
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        participant = player.participant
+        taken_job_names = set(player.offer_actions.split(','))
+        offer_actions = []
+        for job in participant.env.offers:
+            if job.name in taken_job_names:
+                offer_actions.append(1)
+            else:
+                offer_actions.append(0)
+        worked_job_names = set(player.work_actions.split(','))
+        work_actions = []
+        for job in participant.env.jobs:
+            if job.name in worked_job_names:
+                work_actions.append(1)
+            else:
+                work_actions.append(0)
+        participant.env.step(offer_actions, work_actions)
+        participant.payoff = participant.env.total_payment
+        if player.session.accumulate_time:
+            participant.expiry = max(time.time(), participant.expiry) + player.session.day_length
+        else:
+            participant.expiry = time.time() + player.session.day_length
+
     @staticmethod
     def is_displayed(player):
+        return player.round_number <= player.session.config['max_rounds']
 
-        for round in range(1, C.NUM_ROUNDS + 1):
-            for p in Project.filter(player = player.in_round(round)):
-                if ((p.initial_round <= player.round_number and p.final_round >= player.round_number) and p.invest == False):
-                    p.time_remaining = p.final_round - player.round_number
-                
-                if p.time_required_var > 0 and p.invest == True:
-                    if p.round_selected < player.round_number:
-                        p.time_required_var = p.time_required_c + (p.round_selected -  player.round_number) + 1
 
-        return player.final_time > datetime.now().timestamp()
-    
-page_sequence = [FrontPage,
-                 Investment 
-                 ]
+page_sequence = [FrontPage,Investment]
 
 def custom_export(players):
-    '''
-    This function exports the data from the projects
-    '''
-    # header row
     yield [
-        'player','round', 'project_id','project_invest', 'project_lower_bound' , 'project_upper_bound', 'project_payoff', 'player_payoff', 'project_round_selected']
+        'SubjectID','Day', 'Job Name','Action Type', 'Accepted/Worked On',
+        'Parts Completed', 'Soft Deadline Remaining', 'Hard Deadline Remaining', 'Current Payment', 'Payment Received']
     for player in players:
-        for project in Project.filter(player = player):
-            yield [player.id_in_group, player.round_number, project.project_id, project.invest, project.payoff_lower, project.payoff_upper, project.payoff, player.participant.payoff,project.round_selected] 
+        participant = player.participant
+        env = participant.vars['env']
+        if len(env.history.history) > player.round_number-1:
+            hist = env.history.history[player.round_number-1]
+            for job, action in zip(hist.offers, hist.offer_actions):
+                yield [player.id_in_group, player.round_number, job.name, 'Offer', action,
+                       '','','','','']
+            for job, action in zip(hist.jobs, hist.job_actions):
+                received = '' if not job.is_ended() else job.final_payment
+                yield [player.id_in_group, player.round_number, job.name, 'Work', action,
+                       job.parts_completed, job.soft_deadline_remaining(), job.hard_deadline_remaining(), job.payment_current(), received]
