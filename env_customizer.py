@@ -8,6 +8,11 @@ class EmptyEnvCustomizer:
         self.observation_space = None
         self.action_space = None
 
+    # We can store any custom variables here to keep track of
+    def reset(self):
+        pass
+    
+    # Here we can do reward shaping
     def reward(self, env, rew):
         return rew
 
@@ -23,16 +28,17 @@ class EmptyEnvCustomizer:
 
 
 class CustomizedEnvironment(gym.Env):
-    def __init__(self, env, customizer=None, use_custom_reward=True, seed=None):
-        self.env = env
-        self.customizer = customizer if customizer else EmptyEnvCustomizer()
-        self.use_custom_reward = use_custom_reward
-        self.observation_space = self.customizer.observation_space or env.observation_space
-        self.action_space = self.customizer.action_space or env.action_space
+    def __init__(self, env_config):
+        self.env = env_config["env"]
+        self.customizer = env_config.get("customizer", EmptyEnvCustomizer())
+        self.use_custom_reward = env_config.get("use_custom_reward", True)
+        self.observation_space = self.customizer.observation_space or self.env.observation_space
+        self.action_space = self.customizer.action_space or self.env.action_space
 
     def reset(self, **kwargs):
-        obs = self.env.reset(**kwargs)
-        return self.customizer.transform_observation(self.env, obs)
+        obs, info = self.env.reset(**kwargs)
+        self.customizer.reset()
+        return self.customizer.transform_observation(self.env, obs), info
     
     def step(self, action_in):
         action = self.customizer.transform_action(self.env, action_in)
@@ -50,16 +56,18 @@ class CustomizedEnvironment(gym.Env):
     
     
 class CustomizedMultiEnvironment(MultiAgentEnv):
-    def __init__(self, env, customizers=None, use_custom_reward=True, seed=None):
-        self.env = env
-        self.customizers = {aid: customizers.get(aid, EmptyEnvCustomizer) for aid in env._agent_ids}
-        self.use_custom_reward = use_custom_reward
-        self.observation_space = {aid: cust.observation_space or env.observation_space for aid, cust in self.customizers.items()}
-        self.action_space = {aid: cust.action_space or env.action_space for aid, cust in self.customizers.items()}
+    def __init__(self, env_config):
+        self.env = env_config["env"]
+        self.use_custom_reward = env_config.get("use_custom_reward", False)
+        customizers = env_config.get("customizers", {})
+        self.customizers = {aid: customizers.get(aid, EmptyEnvCustomizer()) for aid in env._agent_ids}
+        self.observation_space = {aid: cust.observation_space or self.env.observation_space for aid, cust in self.customizers.items()}
+        self.action_space = {aid: cust.action_space or self.env.action_space for aid, cust in self.customizers.items()}
 
     def reset(self, **kwargs):
-        obs = self.env.reset(**kwargs)
-        return {aid: cust.transform_observation(self.env, obs[aid]) for aid, cust in self.customizers.items()}
+        obs, info = self.env.reset(**kwargs)
+        self.customizer.reset()
+        return {aid: cust.transform_observation(self.env, obs[aid]) for aid, cust in self.customizers.items()}, info
     
     def step(self, actions_in):
         actions = {aid: cust.transform_action(self.env, actions_in[aid]) for aid, cust in self.customizers.items()}

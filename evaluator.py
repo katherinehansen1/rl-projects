@@ -6,7 +6,10 @@ def evaluate_single_agents(env_class, student_customizers, num_episodes=100, see
         seeds = [i for i in range(num_episodes)]
         
     for name, customizer in student_customizers.items():
-        env = CustomizedEnvironment(env=env_class, customizer=customizer, use_custom_reward=False)
+        env = CustomizedEnvironment(env_config={
+            "env":env_class,
+            "customizer":customizer,
+            "use_custom_reward":False})
         total_reward = 0
         for seed in seeds:
             obs = env.reset(seed=seed)
