@@ -2,17 +2,12 @@
 Summary 
 {{ endblock }}
 {{ block content }}
-
-<table class = "table">
-    <thead>
-        <th>Payoff</th>
-        <th>Payoff (USD)</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{player.participant.payoff}}</td>
-            <td>{{player.participant.payoff_plus_participation_fee()}}</td>
-        </tr>
-    </tbody>
-</table>
+<div>
+    <p>
+This decision making experiment has ended!<br>
+Thank you for participating!<br>
+Across all periods of this experiment you have earned {{player.participant.payoff_plus_participation_fee()}}<br>
+Your entire payment will be forwarded to your Paypal account.
+</p>
+</div>
 {{endblock}}

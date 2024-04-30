@@ -26,7 +26,7 @@ class JobEnvRL(JobEnv, gym.Env):
                                               'job_rate': spaces.Box(low=-np.inf, high=np.inf, shape=(n_obs_jobs,), dtype=np.float32)
                                              })
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, options=None):
         self.prev_pay = 0
         super().reset()
         return self.get_observation(), {}
@@ -35,13 +35,11 @@ class JobEnvRL(JobEnv, gym.Env):
         super().soft_reset()
 
     def step(self, actions):
-        work_actions = actions[:self.max_jobs]
-        job_acceptances = self.truncate_acceptances(actions[self.max_jobs:])
-        super().step(list(job_acceptances), list(work_actions), record=False)
+        work_actions = list(actions[:self.max_jobs])
+        job_acceptances = self.truncate_acceptances(list(actions[self.max_jobs:]))
+        super().step(job_acceptances, work_actions, record=False)
         reward = self.total_payment - self.prev_pay
         self.prev_pay = self.total_payment
-        if self.current_day >= self.n_days:
-            return
         done = self.current_day >= self.n_days
         truncated = False
         return self.get_observation(), reward, done, truncated, {}

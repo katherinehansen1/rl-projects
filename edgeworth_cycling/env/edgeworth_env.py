@@ -50,37 +50,35 @@ class OligopolyMarket(MultiAgentEnv):
 
         self.history_length = 5
         self.price_history = []
-        intercept = 17
-        slope = 0.01
+        self.intercept = 17
+        self.slope = 0.01
         self.n_periods = 80
 
         # Actions are tuples of (price, quantity) for each firm
         self.ind_action_space = spaces.Tuple((
-            spaces.Box(low=0,high=intercept),
+            spaces.Box(low=0,high=self.intercept),
             spaces.Box(low=0,high=300)
         ))
-        self.action_space = spaces.Dict({
-            agent_id : self.ind_action_space
-            for agent_id in self._agent_ids
-        })
 
         self.ind_observation_space = spaces.Box(
             low=0,
-            high=intercept,
+            high=self.intercept,
             shape=(self.history_length,)
         )
-        self.observation_space = spaces.Dict({
-            agent_id : self.ind_observation_space
-            for agent_id in self._agent_ids
-        })
+        self.action_space = gym.spaces.Dict(self.make_agent_dictionary(self.ind_action_space))
+        self.observation_space = gym.spaces.Dict(self.make_agent_dictionary(self.ind_observation_space))
 
         self.costs = [4.0]*100 + [4.5]*100 + [5.0]*100
-        self.sales_calc = partial(calculate_sales, intercept=intercept, slope=slope)
+        self.sales_calc = partial(calculate_sales, intercept=self.intercept, slope=self.slope)
+
+    def make_agent_dictionary(self, res):
+        return {agent_id: res for agent_id in self._agent_ids}
 
     def get_observation(self):
-        return list(reversed(self.price_history[-self.history_length:]))
+        price_history = list(reversed(self.price_history[-self.history_length:]))
+        return self.make_agent_dictionary(price_history)
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, options=None):
         self.price_history = [0]*self.history_length
         self.period = 0
         return self.get_observation(), {}
@@ -100,14 +98,20 @@ class OligopolyMarket(MultiAgentEnv):
             if q < len(self.costs):
                 costs += (q - int(q))*self.costs[int(q)]
             profits[aid] = p*q - costs
-        avg_price = sum(sales[aid]*prices[aid] for aid in sales.keys())/sum(sales.values())
+        tot_sales = sum(sales.values())
+        if tot_sales > 0:
+            avg_price = sum(sales[aid]*prices[aid] for aid in sales.keys())/sum(sales.values())
+        else:
+            avg_price = self.intercept
         self.price_history.append(avg_price)
 
         rewards = self.get_rewards(profits)
         done = self.period == self.n_periods
-        truncated = done
+        dones = self.make_agent_dictionary(done)
+        dones['__all__'] = done
+        truncated = dones
         info = {}
-        return self.get_observation(), rewards, done, truncated, info
+        return self.get_observation(), rewards, dones, truncated, info
 
     def get_evaluation_reward(self, profits):
         return profits
