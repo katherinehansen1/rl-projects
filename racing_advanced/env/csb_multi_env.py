@@ -107,7 +107,7 @@ def intersects_moving_circles(p1, v1, p2, v2, r1, r2):
     c = f.dot(f) - r * r
 
     if a == 0:  # The velocities are the same or both are stationary
-        if f.norm() <= r:
+        if f.sqr_norm() <= r**2:
             return True, 0  # Starting within collision range
         else:
             return False, None
@@ -465,23 +465,26 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
         min_vel = -2000.0
         max_vel = 2000.0
         screen_max = [self.gamePixelWidth, self.gamePixelHeight]
-        single_observation_space = spaces.Box(
+        ind_observation_space = spaces.Box(
             low=np.array([0, -np.pi, min_pos, min_pos, min_vel, min_vel]+[0,0]*self.max_checkpoints),
             high=np.array([self.n_laps, np.pi, max_pos, max_pos, max_vel, max_vel]+screen_max*self.max_checkpoints),
             dtype=np.float64
         )
 
-        single_action_space = spaces.Box(
+        ind_action_space = spaces.Box(
             low = np.array([min_pos, min_pos, 0.0]),
             high = np.array([max_pos, max_pos, self.racers[0].max_thrust]),
             dtype=np.float64
         )
 
         self._agent_ids = [racer.aid for racer in self.racers]
-        self.observation_space = {aid: single_observation_space for aid in self._agent_ids}
-        self.action_space = {aid: single_action_space for aid in self._agent_ids}
+        self.action_space = gym.spaces.Dict(self.make_agent_dictionary(ind_action_space))
+        self.observation_space = gym.spaces.Dict(self.make_agent_dictionary(ind_observation_space))
 
-    def get_observation(self):
+    def make_agent_dictionary(self, res):
+        return {agent_id: res for agent_id in self._agent_ids}
+
+    def get_observations(self):
         targets = self.get_targets()
         all_obs = {}
         for racer in self.racers:
@@ -496,7 +499,7 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
 
     def reset(self, seed=None, options=None):
         super().reset()
-        return self.get_observation(), {}
+        return self.get_observations(), {}
 
     def step(self, actions):
         targets = {aid: Vec(action[0], action[1]) for aid, action in actions.items()}
@@ -505,7 +508,7 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
         done = self.race_over()
         dones = {r.aid: done for r in self.racers}
         dones["__all__"] = done
-        return self.get_observation(), self.reward(), dones, dones, {}
+        return self.get_observations(), self.reward(), dones, dones, {}
 
     def render(self):
         return super().render()
@@ -516,7 +519,7 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
 
     def evaluation_reward(self):
         if not self.race_over():
-            return {aid: 0 for aid in self._agent_ids}
+            return self.make_agent_dictionary(0)
         rewards = {}
         winners = self.winning_teams()
         for racer in self.racers:
