@@ -161,3 +161,5 @@ cython_debug/
 #
 # Weird WSL files
 *Zone.Identifier
+
+results/*
