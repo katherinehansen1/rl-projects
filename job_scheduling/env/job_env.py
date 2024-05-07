@@ -69,12 +69,12 @@ class JobEnvRL(JobEnv, gym.Env):
         ])
 
     def get_observation(self):
-        obs = {'period': np.array([self.current_day], dtype=np.int32),
-               'job_reqs': self.create_job_array('n_workers', np.int32),
-               'job_parts': self.create_job_array('parts', np.int32),
+        obs = {'period': np.array([self.current_day], dtype=np.float32),
+               'job_reqs': self.create_job_array('n_workers', np.float32),
+               'job_parts': self.create_job_array('parts', np.float32),
                'job_comps': self.create_job_array('complication_probability', np.float32),
-               'job_soft_deadline': self.create_job_array('soft_deadline', np.int32),
-               'job_hard_deadline': self.create_job_array('hard_deadline', np.int32),
+               'job_soft_deadline': self.create_job_array('soft_deadline', np.float32),
+               'job_hard_deadline': self.create_job_array('hard_deadline', np.float32),
                'job_payments': self.create_job_array('payment', np.float32),
                'job_length': self.create_job_array('expected_length', np.float32, is_method=True),
                'job_rate': self.create_job_array('return_rate', np.float32, is_method=True)

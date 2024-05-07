@@ -76,6 +76,7 @@ class OligopolyMarket(MultiAgentEnv):
 
     def get_observation(self):
         price_history = list(reversed(self.price_history[-self.history_length:]))
+        price_history = np.array(price_history, dtype=np.float32)
         return self.make_agent_dictionary(price_history)
 
     def reset(self, seed=None, options=None):
