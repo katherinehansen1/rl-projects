@@ -1,0 +1,417 @@
+"""
+Original game: https://www.codingame.com/multiplayer/bot-programming/coders-strike-back
+"""
+import math
+import gymnasium as gym
+from gymnasium import spaces, logger
+from gymnasium.utils import seeding
+from ray.rllib.env.multi_agent_env import MultiAgentEnv
+import numpy as np
+import os
+
+class Vec:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __add__(self, other):
+        return Vec(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other):
+        return Vec(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):  # Multiplication by a scalar
+            return Vec(self.x * other, self.y * other)
+        raise NotImplementedError("Can only multiply Vec by a scalar")
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    def __truediv__(self, other):
+        if isinstance(other, (int, float)):  # Division by a scalar
+            return Vec(self.x / other, self.y / other)
+        raise NotImplementedError("Can only divide Vec by a scalar")
+
+    def dot(self, other):
+        return self.x * other.x + self.y * other.y
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+    def to_tuple(self):
+        return (self.x, self.y)
+
+    def round(self):
+        self.x = round(self.x)
+        self.y = round(self.y)
+        return self
+
+    def int(self):
+        self.x = int(self.x)
+        self.y = int(self.y)
+        return self
+
+    def sqr_norm(self):
+        return self.x**2 + self.y**2
+
+    def normalize(self):
+        norm = np.sqrt(self.sqr_norm())
+        if norm == 0:
+            return Vec(0, 0)  # prevent division by zero
+        return Vec(self.x / norm, self.y / norm)
+
+    def perpendicular(self):
+        return Vec(-self.y, self.x)
+
+def get_sqr_distance(v1,v2):
+    x_diff = v1.x - v2.x
+    y_diff = v1.y - v2.y
+    return x_diff**2 + y_diff**2
+
+def get_distance(v1, v2):
+    return math.sqrt(get_sqr_distance(v1,v2))
+
+def get_angle(v1, v2):
+    x_diff = v2.x - v1.x
+    y_diff = v2.y - v1.y
+    return math.atan2(y_diff, x_diff)
+
+def normalize_angle(angle):
+    if angle > math.pi:
+        angle -= 2 * math.pi  # Turn left
+    elif angle < -math.pi:
+        angle += 2 * math.pi  # Turn right
+    return angle
+
+def angle_to_vector(angle):
+    return Vec(math.cos(angle), math.sin(angle))
+
+def intersects_circle(p_prev, p_curr, center, radius):
+    d = p_curr - p_prev
+    f = p_prev - center
+    a = d.dot(d)
+    b = 2 * f.dot(d)
+    c = f.dot(f) - radius**2
+
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0 or a==0:
+        # No intersection
+        return False, None
+
+    discriminant = np.sqrt(discriminant)
+    t1 = (-b - discriminant) / (2 * a)
+    t2 = (-b + discriminant) / (2 * a)
+
+    if (0 <= t1 <= 1):
+        return True, t1
+    elif (0 <= t2 <= 1):
+        return True, t2
+    else:
+        return False, None
+
+
+class Racer:
+    def __init__(self, aid, tid):
+        self.aid = aid
+        self.team_id = tid
+        self.max_thrust = 100.0
+        self.maxSteeringAngle = 0.1 * np.pi
+        self.friction = 0.85
+
+    def move(self, target, thrust):
+        self.pos_prev = self.pos
+        da = self.get_delta_angle(target)
+        da = np.clip(da, -self.maxSteeringAngle, self.maxSteeringAngle)
+
+        self.theta = normalize_angle(self.theta + da)
+        self.vel += thrust * angle_to_vector(self.theta)
+        self.steps_since_last_checkpoint += 1
+        self.pos = (self.pos + self.vel).round()
+        self.vel = (self.vel * self.friction).int()
+        if self.steps_since_last_checkpoint >= 100:
+            self.done = True
+            self.failed = True
+
+    def get_delta_angle(self, target):
+        angle_to_target = get_angle(self.pos, target)
+        delta_angle = angle_to_target - self.theta
+        return normalize_angle(delta_angle)
+
+    def pass_checkpoint(self, time):
+        self.current_checkpoint += 1
+        self.steps_since_last_checkpoint = 0
+        if self.current_checkpoint >= self.num_checkpoints:
+            self.current_checkpoint = 0
+            self.laps_remaining -= 1
+            if self.laps_remaining == 0:
+                self.done = True
+                self.finished = True
+                self.finish_time = time
+
+    def collided(self, target_pos, target_radius):
+        return intersects_circle(self.pos_prev, self.pos, target_pos, target_radius)
+
+    def reset(self, pos, theta, num_checkpoints):
+        self.current_checkpoint = 0
+        self.laps_remaining = 3
+        self.num_checkpoints = num_checkpoints
+        self.steps_since_last_checkpoint = 0
+
+        self.pos = pos
+        self.vel = Vec(0, 0)
+        self.theta = theta
+        self.pos_prev = None
+
+        self.done = False
+        self.failed = False
+        self.finished = False
+        self.finish_time = None
+
+class CodersStrikeBackMultiBase:
+    metadata = {"render.modes": ["human"], "video.frames_per_second": 30}
+    def __init__(self):
+        self.max_checkpoints = 5
+        self.gamePixelWidth = 16000.
+        self.gamePixelHeight = 9000.
+        self.checkpoint_radius = 600
+        self.num_racers_per_team = 2
+        self.num_teams = 2
+        self.racers = []
+        self.checkpoints = self.sample_checkpoints(self.max_checkpoints)
+        self.viewer = None
+        self.n_laps = 3
+        self.pod_radius = 400
+
+        self.teams = set(range(self.num_teams))
+
+        # Initialize racers
+        for c in range(self.num_racers_per_team):
+            for t in range(self.num_teams):
+                self.racers.append(Racer(f'car_{t}_{c}', t))
+
+    def sample_checkpoints(self, n):
+        checkpoints = []
+        while len(checkpoints) < n:
+            x = np.random.randint(self.checkpoint_radius, self.gamePixelWidth - self.checkpoint_radius)
+            y = np.random.randint(self.checkpoint_radius, self.gamePixelHeight - self.checkpoint_radius)
+            checkpoint = Vec(x, y)
+            if all(get_sqr_distance(checkpoint, cp) > (3*self.checkpoint_radius)**2 for cp in checkpoints):
+                checkpoints.append(checkpoint)
+        return checkpoints
+
+
+    def race_over(self):
+        return any(racer.done for racer in self.racers)
+
+    def winning_teams(self):
+        if not self.race_over():
+            return set()
+        failing_teams = set()
+        winner = None
+        winning_time = None
+        for racer in self.racers:
+            if racer.done:
+                if racer.failed:
+                    failing_teams.add(racer.team)
+                if racer.finished:
+                    if winner is None or racer.finish_time < winning_time:
+                        winner = racer.team
+                        winning_time = racer.finish_time
+        if winner:
+            return set(winner)
+        else:
+            return self.teams.difference(failing_teams)
+
+    def reset(self):
+        self.n_checkpoints = np.random.randint(3,self.max_checkpoints + 1)
+        self.checkpoints = self.sample_checkpoints(self.n_checkpoints)
+        self.time = 0
+        self.viewer = None
+
+        start_checkpoint = self.checkpoints[-1]
+        end_checkpoint = self.checkpoints[0]
+
+        direction_vector = end_checkpoint - start_checkpoint
+        perpendicular = direction_vector.perpendicular().normalize()
+
+        num_racers = len(self.racers)
+        midpoint_index = (num_racers-1) / 2
+        spacing = 3 * self.pod_radius
+
+        # Initialize racers
+        for i, racer in enumerate(self.racers):
+            offset_index = i - midpoint_index
+            offset_distance = offset_index * spacing
+            start_pos = start_checkpoint + perpendicular * offset_distance
+            theta = get_angle(start_pos, end_checkpoint)
+            racer.reset(start_pos, theta, self.n_checkpoints)
+
+    def get_targets(self):
+        racer_targets = {}
+        for racer in self.racers:
+            targets = []
+            n = self.n_checkpoints
+            cur_ind = racer.current_checkpoint
+            for i in range(self.max_checkpoints):
+                targets.append(self.checkpoints[(i+cur_ind) % n])
+            racer_targets[racer.aid] = targets
+
+        return racer_targets
+
+    def step(self, targets, thrusts):
+        if self.race_over():
+            return
+        for i, racer in enumerate(self.racers):
+            racer.move(targets[racer.aid], thrusts[racer.aid])
+            passed_check, t = racer.collided(self.checkpoints[racer.current_checkpoint], self.checkpoint_radius)
+            if passed_check:
+                racer.pass_checkpoint(self.time + t)
+
+        self.time += 1
+
+
+    def render(self, mode="human"):
+        # Must be 16:9
+        screen_width = 640
+        screen_height = 360
+        scale = screen_width / self.gamePixelWidth
+        pod_diam = scale * self.pod_radius * 2.0
+        checkpoint_diam = scale * self.checkpoint_radius * 2.0
+
+        if self.viewer is None:
+            import pygame_rendering
+            self.viewer = pygame_rendering.Viewer(screen_width, screen_height)
+
+            dirname = os.path.dirname(__file__)
+            backImgPath = os.path.join(dirname, "imgs", "back.png")
+            self.viewer.setBackground(backImgPath)
+
+            ckptImgPath = backImgPath = os.path.join(dirname, "imgs", "ckpt.png")
+
+            self.checkpointCircle = []
+            for i in range(self.n_checkpoints):
+                if i == self.n_checkpoints - 1:
+                    display_num = "End"
+                else:
+                    display_num = i+1
+                ckpt = scale * self.checkpoints[i]
+                ckptObject = pygame_rendering.Checkpoint(
+                    ckptImgPath,
+                    pos=ckpt.to_tuple(),
+                    number=display_num,
+                    width=checkpoint_diam,
+                    height=checkpoint_diam,
+                )
+                ckptObject.setVisible(True)
+                self.viewer.addCheckpoint(ckptObject)
+
+            podImgPath = backImgPath = os.path.join(dirname, "imgs", "pod.png")
+            for racer in self.racers:
+                pod = scale * racer.pos
+                podObject = pygame_rendering.Pod(
+                    podImgPath,
+                    pos=pod.to_tuple(),
+                    theta=racer.theta,
+                    width=pod_diam,
+                    height=pod_diam,
+                )
+                self.viewer.addPod(podObject)
+
+            text = pygame_rendering.Text(
+                "Time", backgroundColor=(0, 0, 0), pos=(0, 0)
+            )
+            self.viewer.addText(text)
+
+        for i, racer in enumerate(self.racers):
+            self.viewer.pods[i].setPos((scale*racer.pos).to_tuple())
+            self.viewer.pods[i].rotate(racer.theta)
+
+
+        remaining_laps = min(racer.laps_remaining for racer in self.racers)
+        self.viewer.text.setText(f'Time: {self.time}  Lap: {1+self.n_laps - remaining_laps}/{self.n_laps}')
+        return self.viewer.render()
+
+
+    def close(self):
+        if self.viewer:
+            self.viewer.close()
+
+
+class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
+    def __init__(self, seed=None):
+        MultiAgentEnv.__init__(self)
+        CodersStrikeBackMultiBase.__init__(self)
+
+        min_pos = -200000.0
+        max_pos = 200000.0
+        min_vel = -2000.0
+        max_vel = 2000.0
+        screen_max = [self.gamePixelWidth, self.gamePixelHeight]
+        single_observation_space = spaces.Box(
+            low=np.array([0, -np.pi, min_pos, min_pos, min_vel, min_vel]+[0,0]*self.max_checkpoints),
+            high=np.array([self.n_laps, np.pi, max_pos, max_pos, max_vel, max_vel]+screen_max*self.max_checkpoints),
+            dtype=np.float64
+        )
+
+        single_action_space = spaces.Box(
+            low = np.array([min_pos, min_pos, 0.0]),
+            high = np.array([max_pos, max_pos, self.racers[0].max_thrust]),
+            dtype=np.float64
+        )
+
+        self.observation_space = {racer.aid: single_observation_space for racer in self.racers}
+        self.action_space = {racer.aid: single_action_space for racer in self.racers}
+
+    def get_observation(self):
+        targets = self.get_targets()
+        all_obs = {}
+        for racer in self.racers:
+            obs = [racer.laps_remaining, racer.theta,
+                   racer.pos.x, racer.pos.y,
+                   racer.vel.x, racer.vel.y,
+                   ]
+            for t in targets[racer.aid]:
+                obs += [t.x, t.y]
+            all_obs[racer.aid] = np.array(obs)
+        return all_obs
+
+    def reset(self, seed=None, options=None):
+        super().reset()
+        return self.get_observation(), {}
+
+    def step(self, actions):
+        targets = {aid: Vec(action[0], action[1]) for aid, action in actions.items()}
+        thrusts = {aid: action[2] for aid, action in actions.items()}
+        super().step(targets, thrusts)
+        done = self.race_over()
+        dones = {r.aid: done for r in self.racers}
+        dones["__all__"] = done
+        return self.get_observation(), self.reward(), dones, dones, {}
+
+    def render(self):
+        return super().render()
+
+    def close(self):
+        if self.viewer:
+            self.viewer.close()
+
+    def evaluation_reward(self):
+        # Deal with team win
+        if self.race_over():
+            return {racer.aid: -1 + 10000*int(racer.finished) - 10000*int(racer.failed) for racer in self.racers}
+        return {racer.aid: -1 for racer in self.racers}
+
+    def seed(self, seed=None):
+        self.np_random, seed = seeding.np_random(seed)
+        return [seed]
+
+    # Put in your own reward function here
+    def reward(self):
+        return self.evaluation_reward()
