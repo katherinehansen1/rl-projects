@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 
-frames_per_action = 3
+frames_per_action = 4
 env = CodersStrikeBackMulti(dt=1/frames_per_action)
 fps =  env.metadata.get('video.frames_per_second')
 

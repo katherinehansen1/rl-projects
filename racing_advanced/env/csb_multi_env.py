@@ -93,6 +93,41 @@ def normalize_angle(angle):
 def angle_to_vector(angle):
     return Vec(math.cos(angle), math.sin(angle))
 
+def intersects_moving_circles(p1, v1, p2, v2, r1, r2):
+    """
+    Checks if two moving circles defined by their initial positions (p1, p2),
+    velocities (v1, v2), and radii (r1, r2) intersect.
+    """
+    d = v1 - v2  # Relative velocity
+    f = p1 - p2  # Relative position
+    r = r1 + r2  # Sum of radii
+
+    a = d.dot(d)
+    b = 2 * f.dot(d)
+    c = f.dot(f) - r * r
+
+    if a == 0:  # The velocities are the same or both are stationary
+        if f.norm() <= r:
+            return True, 0  # Starting within collision range
+        else:
+            return False, None
+
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0:
+        # No intersection
+        return False, None
+
+    discriminant = np.sqrt(discriminant)
+    t1 = (-b - discriminant) / (2 * a)
+    t2 = (-b + discriminant) / (2 * a)
+
+    # Check for valid time within the time step [0, 1]
+    valid_times = [t for t in (t1, t2) if 0 <= t <= 1]
+    if valid_times:
+        return True, min(valid_times)  # Return the earliest valid collision time
+    else:
+        return False, None
+
 def intersects_circle(p_prev, p_curr, center, radius):
     d = p_curr - p_prev
     f = p_prev - center
@@ -134,10 +169,11 @@ class Racer:
         self.vel += thrust * angle_to_vector(self.theta) * dt
         self.steps_since_last_checkpoint += dt
         self.pos = (self.pos + self.vel * dt).round()
+
+    def finalize_move(self, dt):
         self.vel = (self.vel * (self.friction**dt)).int()
         if self.steps_since_last_checkpoint >= 100:
-            self.done = True
-            self.failed = True
+            self.late = True
 
     def get_delta_angle(self, target):
         angle_to_target = get_angle(self.pos, target)
@@ -148,15 +184,13 @@ class Racer:
         self.current_checkpoint += 1
         self.steps_since_last_checkpoint = 0
         if self.current_checkpoint >= self.num_checkpoints:
+            self.late = False
             self.current_checkpoint = 0
             self.laps_remaining -= 1
             if self.laps_remaining == 0:
                 self.done = True
                 self.finished = True
                 self.finish_time = time
-
-    def collided(self, target_pos, target_radius):
-        return intersects_circle(self.pos_prev, self.pos, target_pos, target_radius)
 
     def reset(self, pos, theta, num_checkpoints):
         self.current_checkpoint = 0
@@ -173,6 +207,7 @@ class Racer:
         self.failed = False
         self.finished = False
         self.finish_time = None
+        self.late = False
 
 class CodersStrikeBackMultiBase:
     metadata = {"render.modes": ["human"], "video.frames_per_second": 30}
@@ -206,18 +241,37 @@ class CodersStrikeBackMultiBase:
 
         self.resolve_all_collisions()
         self.check_checkpoints()
+
+        for racer in self.racers:
+            racer.finalize_move(self.dt)
+
+        self.fail_late_teams()
         self.time += self.dt
+
+    def fail_late_teams(self):
+        failed = {team: True for team in self.teams}
+        for racer in self.racers:
+            if not racer.late:
+                failed[racer.team_id] = False
+        for racer in self.racers:
+            if failed[racer.team_id]:
+                racer.failed = True
+                racer.done = True
+
 
     def resolve_all_collisions(self):
         for i in range(len(self.racers)):
             for j in range(i + 1, len(self.racers)):
-                collided, collision_time = self.racers[i].collided(self.racers[j].pos, self.pod_radius)
+                r1 = self.racers[i]
+                r2 = self.racers[j]
+                collided, collision_time = intersects_moving_circles(r1.pos_prev, r1.vel, r2.pos_prev, r2.vel, self.pod_radius, self.pod_radius)
                 if collided:
                     self.resolve_collision_at_time(self.racers[i], self.racers[j], collision_time, self.dt)
 
     def check_checkpoints(self):
         for racer in self.racers:
-            passed_check, t = racer.collided(self.checkpoints[racer.current_checkpoint], self.checkpoint_radius)
+
+            passed_check, t = intersects_circle(racer.pos_prev, racer.pos, self.checkpoints[racer.current_checkpoint], self.checkpoint_radius)
             if passed_check:
                 racer.pass_checkpoint(self.time + t)
 
@@ -251,7 +305,7 @@ class CodersStrikeBackMultiBase:
             return
 
         # Calculate impulse magnitude
-        restitution = 1  # Coefficient of restitution for elastic collision
+        restitution = 0.5  # Coefficient of restitution for elastic collision
         impulse_magnitude = -(1 + restitution) * velocity_along_normal
         impulse_magnitude = max(impulse_magnitude, 120)  # Minimum impulse
 
