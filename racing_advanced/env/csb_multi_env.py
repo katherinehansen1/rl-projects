@@ -125,16 +125,16 @@ class Racer:
         self.maxSteeringAngle = 0.1 * np.pi
         self.friction = 0.85
 
-    def move(self, target, thrust):
+    def move(self, target, thrust, dt):
         self.pos_prev = self.pos
         da = self.get_delta_angle(target)
-        da = np.clip(da, -self.maxSteeringAngle, self.maxSteeringAngle)
+        da = np.clip(da, -self.maxSteeringAngle*dt, self.maxSteeringAngle*dt)
 
         self.theta = normalize_angle(self.theta + da)
-        self.vel += thrust * angle_to_vector(self.theta)
-        self.steps_since_last_checkpoint += 1
-        self.pos = (self.pos + self.vel).round()
-        self.vel = (self.vel * self.friction).int()
+        self.vel += thrust * angle_to_vector(self.theta) * dt
+        self.steps_since_last_checkpoint += dt
+        self.pos = (self.pos + self.vel * dt).round()
+        self.vel = (self.vel * (self.friction**dt)).int()
         if self.steps_since_last_checkpoint >= 100:
             self.done = True
             self.failed = True
@@ -176,7 +176,7 @@ class Racer:
 
 class CodersStrikeBackMultiBase:
     metadata = {"render.modes": ["human"], "video.frames_per_second": 30}
-    def __init__(self):
+    def __init__(self, dt=1):
         self.max_checkpoints = 5
         self.gamePixelWidth = 16000.
         self.gamePixelHeight = 9000.
@@ -188,6 +188,7 @@ class CodersStrikeBackMultiBase:
         self.viewer = None
         self.n_laps = 3
         self.pod_radius = 400
+        self.dt = dt
 
         self.teams = set(range(self.num_teams))
 
@@ -201,20 +202,18 @@ class CodersStrikeBackMultiBase:
             return
 
         for racer in self.racers:
-            racer.move(targets[racer.aid], thrusts[racer.aid])
+            racer.move(targets[racer.aid], thrusts[racer.aid], self.dt)
 
         self.resolve_all_collisions()
         self.check_checkpoints()
-
-        self.time += 1
+        self.time += self.dt
 
     def resolve_all_collisions(self):
         for i in range(len(self.racers)):
             for j in range(i + 1, len(self.racers)):
-                dt = 1
                 collided, collision_time = self.racers[i].collided(self.racers[j].pos, self.pod_radius)
                 if collided:
-                    self.resolve_collision_at_time(self.racers[i], self.racers[j], collision_time)
+                    self.resolve_collision_at_time(self.racers[i], self.racers[j], collision_time, self.dt)
 
     def check_checkpoints(self):
         for racer in self.racers:
@@ -222,20 +221,20 @@ class CodersStrikeBackMultiBase:
             if passed_check:
                 racer.pass_checkpoint(self.time + t)
 
-    def resolve_collision_at_time(self, racer1, racer2, t):
+    def resolve_collision_at_time(self, racer1, racer2, t, dt):
         # Move each racer to the point of collision
         initial_pos1 = racer1.pos_prev
         initial_pos2 = racer2.pos_prev
-        racer1.pos = initial_pos1 + (racer1.vel * t)
-        racer2.pos = initial_pos2 + (racer2.vel * t)
+        racer1.pos = initial_pos1 + (racer1.vel * dt*t)
+        racer2.pos = initial_pos2 + (racer2.vel * dt*t)
 
         # Calculate new velocities post-collision
         self.handle_collision(racer1, racer2)
 
         # Move racers for the remaining time step t_remain
         t_remain = 1 - t
-        racer1.pos += racer1.vel * t_remain
-        racer2.pos += racer2.vel * t_remain
+        racer1.pos += racer1.vel * t_remain * dt
+        racer2.pos += racer2.vel * t_remain * dt
 
 
     def handle_collision(self, racer1, racer2):
@@ -285,13 +284,13 @@ class CodersStrikeBackMultiBase:
         for racer in self.racers:
             if racer.done:
                 if racer.failed:
-                    failing_teams.add(racer.team)
+                    failing_teams.add(racer.team_id)
                 if racer.finished:
                     if winner is None or racer.finish_time < winning_time:
-                        winner = racer.team
+                        winner = racer.team_id
                         winning_time = racer.finish_time
         if winner:
-            return set(winner)
+            return set([winner])
         else:
             return self.teams.difference(failing_teams)
 
@@ -403,9 +402,9 @@ class CodersStrikeBackMultiBase:
 
 
 class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
-    def __init__(self, seed=None):
+    def __init__(self, seed=None, dt=1):
         MultiAgentEnv.__init__(self)
-        CodersStrikeBackMultiBase.__init__(self)
+        CodersStrikeBackMultiBase.__init__(self, dt)
 
         min_pos = -200000.0
         max_pos = 200000.0
@@ -424,8 +423,9 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
             dtype=np.float64
         )
 
-        self.observation_space = {racer.aid: single_observation_space for racer in self.racers}
-        self.action_space = {racer.aid: single_action_space for racer in self.racers}
+        self._agent_ids = [racer.aid for racer in self.racers]
+        self.observation_space = {aid: single_observation_space for aid in self._agent_ids}
+        self.action_space = {aid: single_action_space for aid in self._agent_ids}
 
     def get_observation(self):
         targets = self.get_targets()
@@ -461,15 +461,20 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
             self.viewer.close()
 
     def evaluation_reward(self):
-        # Deal with team win
-        if self.race_over():
-            return {racer.aid: -1 + 10000*int(racer.finished) - 10000*int(racer.failed) for racer in self.racers}
-        return {racer.aid: -1 for racer in self.racers}
+        if not self.race_over():
+            return {aid: 0 for aid in self._agent_ids}
+        rewards = {}
+        winners = self.winning_teams()
+        for racer in self.racers:
+            if racer.team_id in winners:
+                rewards[racer.aid] = 1
+            else:
+                rewards[racer.aid] = -1
+        return rewards
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
-    # Put in your own reward function here
     def reward(self):
         return self.evaluation_reward()
