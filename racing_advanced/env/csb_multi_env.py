@@ -196,6 +196,72 @@ class CodersStrikeBackMultiBase:
             for t in range(self.num_teams):
                 self.racers.append(Racer(f'car_{t}_{c}', t))
 
+    def step(self, targets, thrusts):
+        if self.race_over():
+            return
+
+        for racer in self.racers:
+            racer.move(targets[racer.aid], thrusts[racer.aid])
+
+        self.resolve_all_collisions()
+        self.check_checkpoints()
+
+        self.time += 1
+
+    def resolve_all_collisions(self):
+        for i in range(len(self.racers)):
+            for j in range(i + 1, len(self.racers)):
+                dt = 1
+                collided, collision_time = self.racers[i].collided(self.racers[j].pos, self.pod_radius)
+                if collided:
+                    self.resolve_collision_at_time(self.racers[i], self.racers[j], collision_time)
+
+    def check_checkpoints(self):
+        for racer in self.racers:
+            passed_check, t = racer.collided(self.checkpoints[racer.current_checkpoint], self.checkpoint_radius)
+            if passed_check:
+                racer.pass_checkpoint(self.time + t)
+
+    def resolve_collision_at_time(self, racer1, racer2, t):
+        # Move each racer to the point of collision
+        initial_pos1 = racer1.pos_prev
+        initial_pos2 = racer2.pos_prev
+        racer1.pos = initial_pos1 + (racer1.vel * t)
+        racer2.pos = initial_pos2 + (racer2.vel * t)
+
+        # Calculate new velocities post-collision
+        self.handle_collision(racer1, racer2)
+
+        # Move racers for the remaining time step t_remain
+        t_remain = 1 - t
+        racer1.pos += racer1.vel * t_remain
+        racer2.pos += racer2.vel * t_remain
+
+
+    def handle_collision(self, racer1, racer2):
+        # Normal vector between the two colliding pods
+        normal = racer1.pos - racer2.pos
+        normal = normal.normalize()
+
+        # Relative velocity vector
+        rel_vel = racer1.vel - racer2.vel
+        velocity_along_normal = rel_vel.dot(normal)
+
+        # Ensure the collision is valid (pods are moving towards each other)
+        if velocity_along_normal > 0:
+            return
+
+        # Calculate impulse magnitude
+        restitution = 1  # Coefficient of restitution for elastic collision
+        impulse_magnitude = -(1 + restitution) * velocity_along_normal
+        impulse_magnitude = max(impulse_magnitude, 120)  # Minimum impulse
+
+        # Apply impulse to both racers
+        impulse = normal * impulse_magnitude
+        racer1.vel += impulse
+        racer2.vel -= impulse
+
+
     def sample_checkpoints(self, n):
         checkpoints = []
         while len(checkpoints) < n:
@@ -228,6 +294,7 @@ class CodersStrikeBackMultiBase:
             return set(winner)
         else:
             return self.teams.difference(failing_teams)
+
 
     def reset(self):
         self.n_checkpoints = np.random.randint(3,self.max_checkpoints + 1)
@@ -265,16 +332,6 @@ class CodersStrikeBackMultiBase:
 
         return racer_targets
 
-    def step(self, targets, thrusts):
-        if self.race_over():
-            return
-        for i, racer in enumerate(self.racers):
-            racer.move(targets[racer.aid], thrusts[racer.aid])
-            passed_check, t = racer.collided(self.checkpoints[racer.current_checkpoint], self.checkpoint_radius)
-            if passed_check:
-                racer.pass_checkpoint(self.time + t)
-
-        self.time += 1
 
 
     def render(self, mode="human"):
@@ -312,11 +369,12 @@ class CodersStrikeBackMultiBase:
                 ckptObject.setVisible(True)
                 self.viewer.addCheckpoint(ckptObject)
 
-            podImgPath = backImgPath = os.path.join(dirname, "imgs", "pod.png")
+            podImgPaths = backImgPaths = [os.path.join(dirname, "imgs", "pod.png"),
+                                          os.path.join(dirname, "imgs", "pod2.png")]
             for racer in self.racers:
                 pod = scale * racer.pos
                 podObject = pygame_rendering.Pod(
-                    podImgPath,
+                    podImgPaths[racer.team_id],
                     pos=pod.to_tuple(),
                     theta=racer.theta,
                     width=pod_diam,

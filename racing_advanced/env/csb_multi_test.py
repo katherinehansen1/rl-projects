@@ -29,7 +29,7 @@ for n in range(10):
             actions[aid] = action
 
         # Slow down the cycle for a realistic simulation
-        time.sleep(1.0/fps)
+        time.sleep(1.0/(fps/2))
 
         # Do a game step
         state, reward, dones, trunc, _ = env.step(actions)
