@@ -454,6 +454,8 @@ class CodersStrikeBackMultiBase:
         if self.viewer:
             self.viewer.close()
 
+def make_agent_dictionary(agent_ids, res):
+    return {agent_id: res for agent_id in agent_ids}
 
 class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
     def __init__(self, seed=None, dt=1):
@@ -465,24 +467,21 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
         min_vel = -2000.0
         max_vel = 2000.0
         screen_max = [self.gamePixelWidth, self.gamePixelHeight]
-        ind_observation_space = spaces.Box(
+        self.ind_observation_space = spaces.Box(
             low=np.array([0, -np.pi, min_pos, min_pos, min_vel, min_vel]+[0,0]*self.max_checkpoints),
             high=np.array([self.n_laps, np.pi, max_pos, max_pos, max_vel, max_vel]+screen_max*self.max_checkpoints),
             dtype=np.float64
         )
 
-        ind_action_space = spaces.Box(
+        self.ind_action_space = spaces.Box(
             low = np.array([min_pos, min_pos, 0.0]),
             high = np.array([max_pos, max_pos, self.racers[0].max_thrust]),
             dtype=np.float64
         )
 
         self._agent_ids = [racer.aid for racer in self.racers]
-        self.action_space = gym.spaces.Dict(self.make_agent_dictionary(ind_action_space))
-        self.observation_space = gym.spaces.Dict(self.make_agent_dictionary(ind_observation_space))
-
-    def make_agent_dictionary(self, res):
-        return {agent_id: res for agent_id in self._agent_ids}
+        self.action_space = gym.spaces.Dict(make_agent_dictionary(self._agent_ids, self.ind_action_space))
+        self.observation_space = gym.spaces.Dict(make_agent_dictionary(self._agent_ids, self.ind_observation_space))
 
     def get_observations(self):
         targets = self.get_targets()
@@ -519,7 +518,7 @@ class CodersStrikeBackMulti(CodersStrikeBackMultiBase, MultiAgentEnv):
 
     def evaluation_reward(self):
         if not self.race_over():
-            return self.make_agent_dictionary(0)
+            return make_agent_dictionary(self._agent_ids, 0)
         rewards = {}
         winners = self.winning_teams()
         for racer in self.racers:
