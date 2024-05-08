@@ -28,11 +28,11 @@ for n in range(10):
         # Print the state
 
         print('---------- Tick %d' % i)
-        print('Pod angle ', state[0])
-        print('Pod (x,y): (%d, %d)' % (state[1], state[2]))
-        print('Pod velocity (v_x,v_y): (%d, %d)' % (state[3], state[4]))
-        print('First Checkpoint (x,y): (%d, %d)' % (state[5],state[6]))
-        print('Second Checkpoint (x,y): (%d, %d)' % (state[7],state[8]))
+        print('Pod angle ', state[1])
+        print('Pod (x,y): (%d, %d)' % (state[2], state[3]))
+        print('Pod velocity (v_x,v_y): (%d, %d)' % (state[4], state[5]))
+        print('First Checkpoint (x,y): (%d, %d)' % (state[6],state[7]))
+        print('Second Checkpoint (x,y): (%d, %d)' % (state[8],state[9]))
         print('Reward ', reward)
         print('Total Time', env.time)
         print('done ', done)
