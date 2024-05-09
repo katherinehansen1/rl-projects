@@ -346,8 +346,8 @@ class CodersStrikeBackSingle(CodersStrikeBackBase, gym.Env):
         super().step(target,thrust)
         return self.get_observation(), self.reward(), self.done, self.done, {}
 
-    def render(self):
-        return super().render()
+    def render(self, **kwargs):
+        return super().render(**kwargs)
 
     def close(self):
         if self.viewer:

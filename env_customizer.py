@@ -48,8 +48,8 @@ class CustomizedEnvironment(gym.Env):
             rew = self.customizer.reward(self.env, rew)
         return obs, rew, done, trunc, info
 
-    def render(self, mode='human', **kwargs):
-        return self.env.render(mode, **kwargs)
+    def render(self, **kwargs):
+        return self.env.render(**kwargs)
 
     def close(self):
         return self.env.close()
