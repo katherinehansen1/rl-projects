@@ -1,0 +1,199 @@
+{
+    "os": "Linux-5.15.0-79-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "heartbeatAt": "2024-05-13T00:01:17.664568",
+    "startedAt": "2024-05-13T00:01:16.960532",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--node-ip-address=206.211.132.160",
+        "--node-manager-port=45105",
+        "--object-store-name=/tmp/ray/session_2024-05-12_17-00-49_345127_1707010/sockets/plasma_store",
+        "--raylet-name=/tmp/ray/session_2024-05-12_17-00-49_345127_1707010/sockets/raylet",
+        "--redis-address=None",
+        "--temp-dir=/tmp/ray",
+        "--metrics-agent-port=61816",
+        "--runtime-env-agent-port=63181",
+        "--logging-rotate-bytes=536870912",
+        "--logging-rotate-backup-count=5",
+        "--runtime-env-agent-port=63181",
+        "--gcs-address=206.211.132.160:65271",
+        "--session-name=session_2024-05-12_17-00-49_345127_1707010",
+        "--temp-dir=/tmp/ray",
+        "--webui=",
+        "--cluster-id=75084b3a046a60e8bdeebdfb16a27c7cd91ff86ab7f57b225c8f7634",
+        "--startup-token=51",
+        "--worker-launch-time-ms=1715558473120",
+        "--runtime-env-hash=-855302465"
+    ],
+    "state": "running",
+    "program": "/home/healthcare/.local/lib/python3.10/site-packages/ray/_private/workers/default_worker.py",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/katherinehansen1/rl-projects.git",
+        "commit": "368362e3181c11a11181b06dccee9dc0d9f6a38f"
+    },
+    "email": "james144@mail.chapman.edu",
+    "root": "/home/healthcare/Desktop/Tristan/rl-projects",
+    "host": "ESI-lambda-quad-01",
+    "username": "healthcare",
+    "executable": "/bin/python",
+    "cpu_count": 12,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3.217416666666667,
+        "min": 1200.0,
+        "max": 4316.666666666667
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.237,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.206,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.29,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.219,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.236,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.198,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.279,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.273,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.301,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.314,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.16,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.288,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.215,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.212,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.227,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.225,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.188,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.293,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.277,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.325,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.301,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 3.167,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1832.2072448730469,
+            "used": 1419.573429107666
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 125.46464538574219
+    }
+}

@@ -1,0 +1,368 @@
+2024-05-12 16:27:28,231 INFO    StreamThr :1683154 [internal.py:wandb_internal():85] W&B internal server running at pid: 1683154, started at: 2024-05-12 16:27:28.230006
+2024-05-12 16:27:28,233 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status
+2024-05-12 16:27:28,236 INFO    WriterThread:1683154 [datastore.py:open_for_write():87] open: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/run-2b391_00000.wandb
+2024-05-12 16:27:28,239 DEBUG   SenderThread:1683154 [sender.py:send():378] send: header
+2024-05-12 16:27:28,240 DEBUG   SenderThread:1683154 [sender.py:send():378] send: run
+2024-05-12 16:27:28,556 INFO    SenderThread:1683154 [dir_watcher.py:__init__():211] watching files in: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files
+2024-05-12 16:27:28,556 INFO    SenderThread:1683154 [sender.py:_start_run_threads():1123] run started: 2b391_00000 with start time 1715556448.229859
+2024-05-12 16:27:28,574 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: check_version
+2024-05-12 16:27:28,574 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: check_version
+2024-05-12 16:27:28,714 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: run_start
+2024-05-12 16:27:28,734 DEBUG   HandlerThread:1683154 [system_info.py:__init__():26] System info init
+2024-05-12 16:27:28,734 DEBUG   HandlerThread:1683154 [system_info.py:__init__():41] System info init done
+2024-05-12 16:27:28,734 INFO    HandlerThread:1683154 [system_monitor.py:start():194] Starting system monitor
+2024-05-12 16:27:28,734 INFO    SystemMonitor:1683154 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-05-12 16:27:28,734 INFO    HandlerThread:1683154 [system_monitor.py:probe():214] Collecting system info
+2024-05-12 16:27:28,735 INFO    SystemMonitor:1683154 [interfaces.py:start():188] Started cpu monitoring
+2024-05-12 16:27:28,736 INFO    SystemMonitor:1683154 [interfaces.py:start():188] Started disk monitoring
+2024-05-12 16:27:28,737 INFO    SystemMonitor:1683154 [interfaces.py:start():188] Started gpu monitoring
+2024-05-12 16:27:28,738 INFO    SystemMonitor:1683154 [interfaces.py:start():188] Started memory monitoring
+2024-05-12 16:27:28,739 INFO    SystemMonitor:1683154 [interfaces.py:start():188] Started network monitoring
+2024-05-12 16:27:28,775 DEBUG   HandlerThread:1683154 [system_info.py:probe():150] Probing system
+2024-05-12 16:27:28,778 DEBUG   HandlerThread:1683154 [gitlib.py:_init_repo():56] git repository is invalid
+2024-05-12 16:27:28,778 DEBUG   HandlerThread:1683154 [system_info.py:probe():198] Probing system done
+2024-05-12 16:27:28,778 DEBUG   HandlerThread:1683154 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-79-generic-x86_64-with-glibc2.35', 'python': '3.10.12', 'heartbeatAt': '2024-05-12T23:27:28.775430', 'startedAt': '2024-05-12T23:27:28.221588', 'docker': None, 'cuda': None, 'args': ('--node-ip-address=206.211.132.160', '--node-manager-port=42573', '--object-store-name=/tmp/ray/session_2024-05-12_16-27-11_796891_1676274/sockets/plasma_store', '--raylet-name=/tmp/ray/session_2024-05-12_16-27-11_796891_1676274/sockets/raylet', '--redis-address=None', '--temp-dir=/tmp/ray', '--metrics-agent-port=56937', '--runtime-env-agent-port=58835', '--logging-rotate-bytes=536870912', '--logging-rotate-backup-count=5', '--runtime-env-agent-port=58835', '--gcs-address=206.211.132.160:62671', '--session-name=session_2024-05-12_16-27-11_796891_1676274', '--temp-dir=/tmp/ray', '--webui=', '--cluster-id=47ea5f21cb67bfa448f5d74a50047be7bfb12507e0349eba5288b59d', '--startup-token=30', '--worker-launch-time-ms=1715556443822', '--runtime-env-hash=-1068589896'), 'state': 'running', 'program': '/home/healthcare/.local/lib/python3.10/site-packages/ray/_private/workers/default_worker.py', 'codePathLocal': None, 'host': 'ESI-lambda-quad-01', 'username': 'healthcare', 'executable': '/bin/python', 'cpu_count': 12, 'cpu_count_logical': 24, 'cpu_freq': {'current': 3.0686250000000004, 'min': 1200.0, 'max': 4316.666666666667}, 'cpu_freq_per_core': [{'current': 3.131, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.389, 'min': 1200.0, 'max': 4300.0}, {'current': 3.799, 'min': 1200.0, 'max': 4400.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 3.799, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 3.799, 'min': 1200.0, 'max': 4300.0}, {'current': 3.799, 'min': 1200.0, 'max': 4400.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 1.342, 'min': 1200.0, 'max': 4300.0}, {'current': 3.12, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4400.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 2.9, 'min': 1200.0, 'max': 4400.0}, {'current': 2.9, 'min': 1200.0, 'max': 4300.0}, {'current': 1.199, 'min': 1200.0, 'max': 4300.0}], 'disk': {'/': {'total': 1832.2072448730469, 'used': 1419.418228149414}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 4, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}, {'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}], 'memory': {'total': 125.46464538574219}}
+2024-05-12 16:27:28,778 INFO    HandlerThread:1683154 [system_monitor.py:probe():224] Finished collecting system info
+2024-05-12 16:27:28,778 INFO    HandlerThread:1683154 [system_monitor.py:probe():227] Publishing system info
+2024-05-12 16:27:28,779 INFO    HandlerThread:1683154 [system_monitor.py:probe():229] Finished publishing system info
+2024-05-12 16:27:28,787 DEBUG   SenderThread:1683154 [sender.py:send():378] send: files
+2024-05-12 16:27:28,788 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-metadata.json with policy now
+2024-05-12 16:27:28,980 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: python_packages
+2024-05-12 16:27:28,980 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: python_packages
+2024-05-12 16:27:28,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:27:28,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:27:29,109 DEBUG   SenderThread:1683154 [sender.py:send():378] send: telemetry
+2024-05-12 16:27:29,109 DEBUG   SenderThread:1683154 [sender.py:send():378] send: telemetry
+2024-05-12 16:27:29,110 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:27:29,276 INFO    wandb-upload_0:1683154 [upload_job.py:push():130] Uploaded file /tmp/tmpwdcy029gwandb/vxnj00au-wandb-metadata.json
+2024-05-12 16:27:29,561 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_created():271] file/dir created: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/requirements.txt
+2024-05-12 16:27:29,561 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_created():271] file/dir created: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-metadata.json
+2024-05-12 16:27:34,111 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:27:39,111 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:27:39,354 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:27:39,357 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:27:39,378 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:27:39,379 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:27:39,381 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:27:39,560 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_created():271] file/dir created: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:27:43,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:27:43,981 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:27:45,101 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:27:50,102 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:27:52,022 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:27:52,023 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:27:52,028 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:27:52,029 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:27:52,031 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:27:52,566 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:27:56,032 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:27:58,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:27:58,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:28:01,119 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:01,569 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:28:05,197 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:28:05,202 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:28:05,205 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:28:05,206 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:28:05,210 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:28:05,570 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:28:07,211 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:12,212 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:13,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:28:13,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:28:18,117 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:18,569 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:28:18,571 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:28:18,575 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:28:18,576 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:28:18,580 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:28:18,580 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:28:23,582 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:28,583 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:28,739 DEBUG   SystemMonitor:1683154 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-05-12 16:28:28,742 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:28:28,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:28:28,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:28:32,106 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:28:32,108 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:28:32,110 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:28:32,111 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:28:32,113 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:28:32,378 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: log_artifact
+2024-05-12 16:28:32,379 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: log_artifact
+2024-05-12 16:28:32,585 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:28:32,586 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_created():271] file/dir created: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/output.log
+2024-05-12 16:28:33,151 INFO    wandb-upload_0:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpo8d3fyki
+2024-05-12 16:28:34,586 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/output.log
+2024-05-12 16:28:34,688 INFO    wandb-upload_8:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpzjj0lii1
+2024-05-12 16:28:34,752 INFO    wandb-upload_7:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp_z72np52
+2024-05-12 16:28:34,764 INFO    wandb-upload_6:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpw7yml7hg
+2024-05-12 16:28:34,782 INFO    wandb-upload_4:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmprxbxspyq
+2024-05-12 16:28:34,787 INFO    wandb-upload_2:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpkdyv_iox
+2024-05-12 16:28:34,792 INFO    wandb-upload_1:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp15mrrtwq
+2024-05-12 16:28:34,793 INFO    wandb-upload_3:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpakw_zjat
+2024-05-12 16:28:34,802 INFO    wandb-upload_5:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp01tzjzai
+2024-05-12 16:28:35,405 INFO    SenderThread:1683154 [sender.py:send_request_log_artifact():1455] logged artifact checkpoint_PPO_CardGameEnv_2b391_00000 - {'id': 'QXJ0aWZhY3Q6ODMzNTUyNzE3', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE3Mzg2MTg4Mw==', 'latestArtifact': None}}
+2024-05-12 16:28:35,411 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:35,587 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:28:40,556 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:43,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:28:43,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:28:46,035 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:28:46,052 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:28:46,054 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:28:46,054 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:46,055 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:28:46,057 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:28:46,591 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:28:51,058 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:56,060 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:28:58,743 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:28:58,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:28:58,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:28:59,379 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:28:59,381 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:28:59,386 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:28:59,387 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:28:59,388 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:28:59,596 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:29:01,390 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:06,395 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:06,599 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:29:11,535 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:13,059 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:29:13,064 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:29:13,083 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:29:13,084 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:29:13,086 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:29:13,602 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:29:13,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:29:13,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:29:17,132 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:22,133 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:26,637 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:29:26,640 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:29:26,643 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:29:26,644 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:29:26,644 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:29:27,608 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:29:27,645 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:28,745 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:29:28,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:29:28,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:29:33,162 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:38,168 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:38,613 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:29:40,203 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:29:40,206 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:29:40,212 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:29:40,214 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:29:40,216 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:29:40,434 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: log_artifact
+2024-05-12 16:29:40,435 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: log_artifact
+2024-05-12 16:29:40,614 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/output.log
+2024-05-12 16:29:40,614 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:29:40,866 INFO    wandb-upload_8:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmp7bjmlddl
+2024-05-12 16:29:40,866 INFO    wandb-upload_3:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmpipq_ysf1
+2024-05-12 16:29:41,091 INFO    wandb-upload_4:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpalql29hq
+2024-05-12 16:29:41,108 INFO    wandb-upload_6:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmppe78idku
+2024-05-12 16:29:41,129 INFO    wandb-upload_1:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpk773d1z_
+2024-05-12 16:29:41,134 INFO    wandb-upload_0:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpex9yr3nn
+2024-05-12 16:29:41,138 INFO    wandb-upload_7:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpslqr9gw4
+2024-05-12 16:29:41,140 INFO    wandb-upload_2:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpynj8rxbi
+2024-05-12 16:29:41,151 INFO    wandb-upload_5:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmphurivbx9
+2024-05-12 16:29:41,758 INFO    SenderThread:1683154 [sender.py:send_request_log_artifact():1455] logged artifact checkpoint_PPO_CardGameEnv_2b391_00000 - {'id': 'QXJ0aWZhY3Q6ODMzNTUzNTU1', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE3Mzg2MTg4Mw==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6ODMzNTUyNzE3', 'versionIndex': 0}}}
+2024-05-12 16:29:43,758 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:43,981 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:29:43,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:29:49,152 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:53,066 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:29:53,068 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:29:53,090 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:29:53,092 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:29:53,094 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:29:53,618 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:29:55,095 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:29:58,747 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:29:58,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:29:58,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:30:00,101 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:05,101 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:06,257 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:30:06,259 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:30:06,265 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:30:06,266 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:30:06,271 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:30:06,624 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:30:10,277 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:10,626 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:30:13,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:30:13,982 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:30:16,085 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:19,642 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:30:19,643 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:30:19,654 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:30:19,655 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:30:19,656 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:30:20,630 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:30:21,657 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:26,658 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:28,748 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:30:28,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:30:28,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:30:32,126 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:33,185 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:30:33,202 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:30:33,204 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:30:33,205 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:30:33,207 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:30:33,635 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:30:37,208 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:42,214 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:42,638 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:30:43,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:30:43,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:30:46,329 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:30:46,331 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:30:46,336 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:30:46,338 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:30:46,339 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:30:46,580 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: log_artifact
+2024-05-12 16:30:46,580 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: log_artifact
+2024-05-12 16:30:46,640 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:30:47,137 INFO    wandb-upload_3:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmpp_acfz_b
+2024-05-12 16:30:47,138 INFO    wandb-upload_2:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmpk68w0_ux
+2024-05-12 16:30:47,366 INFO    wandb-upload_8:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp1ylx3ocw
+2024-05-12 16:30:47,370 INFO    wandb-upload_6:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpjk4f4t35
+2024-05-12 16:30:47,379 INFO    wandb-upload_5:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpx7roccgc
+2024-05-12 16:30:47,385 INFO    wandb-upload_1:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpbei4a547
+2024-05-12 16:30:47,392 INFO    wandb-upload_0:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp3lde603c
+2024-05-12 16:30:47,407 INFO    wandb-upload_7:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp79wvj2un
+2024-05-12 16:30:47,409 INFO    wandb-upload_4:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp25vqf668
+2024-05-12 16:30:47,640 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/output.log
+2024-05-12 16:30:48,051 INFO    SenderThread:1683154 [sender.py:send_request_log_artifact():1455] logged artifact checkpoint_PPO_CardGameEnv_2b391_00000 - {'id': 'QXJ0aWZhY3Q6ODMzNTU0Mjcy', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE3Mzg2MTg4Mw==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6ODMzNTUzNTU1', 'versionIndex': 1}}}
+2024-05-12 16:30:48,052 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:53,052 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:58,053 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:30:58,750 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:30:58,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:30:58,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:30:59,591 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:30:59,594 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:30:59,599 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:30:59,600 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:30:59,602 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:30:59,645 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:31:03,603 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:08,604 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:13,300 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:31:13,317 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:31:13,319 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:31:13,320 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:31:13,322 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:31:13,651 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:31:13,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:31:13,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:31:14,073 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:14,651 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:31:19,199 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:24,199 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:26,318 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:31:26,320 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:31:26,325 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:31:26,327 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:31:26,328 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:31:26,656 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:31:28,752 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:31:28,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:31:28,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:31:30,155 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:35,156 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:39,530 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:31:39,532 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:31:39,555 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:31:39,556 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:31:39,557 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:31:39,662 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:31:40,558 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:43,982 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:31:43,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:31:46,162 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:46,665 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:31:51,296 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:52,928 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:31:52,930 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:31:52,935 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:31:52,936 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:31:52,938 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:31:53,259 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: log_artifact
+2024-05-12 16:31:53,260 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: log_artifact
+2024-05-12 16:31:53,668 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:31:53,677 INFO    wandb-upload_2:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmpw8cxxsx7
+2024-05-12 16:31:53,677 INFO    wandb-upload_7:1683154 [upload_job.py:push():85] Skipped uploading /home/healthcare/.local/share/wandb/artifacts/staging/tmpramsqdww
+2024-05-12 16:31:53,906 INFO    wandb-upload_6:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpvvo2p_7w
+2024-05-12 16:31:53,910 INFO    wandb-upload_5:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpfvi4m63v
+2024-05-12 16:31:53,911 INFO    wandb-upload_3:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp9cn700xl
+2024-05-12 16:31:53,918 INFO    wandb-upload_4:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp5hnn4lqs
+2024-05-12 16:31:53,922 INFO    wandb-upload_0:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpyp5uxro6
+2024-05-12 16:31:53,934 INFO    wandb-upload_1:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmpfioz49er
+2024-05-12 16:31:53,966 INFO    wandb-upload_8:1683154 [upload_job.py:push():88] Uploaded file /home/healthcare/.local/share/wandb/artifacts/staging/tmp3zn27saf
+2024-05-12 16:31:54,640 INFO    SenderThread:1683154 [sender.py:send_request_log_artifact():1455] logged artifact checkpoint_PPO_CardGameEnv_2b391_00000 - {'id': 'QXJ0aWZhY3Q6ODMzNTU1MTI3', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE3Mzg2MTg4Mw==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6ODMzNTU0Mjcy', 'versionIndex': 2}}}
+2024-05-12 16:31:55,669 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/output.log
+2024-05-12 16:31:56,641 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:31:58,754 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:31:58,983 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:31:58,984 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:32:02,115 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:06,686 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:32:06,687 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:32:06,695 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:32:06,696 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:32:06,699 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:32:07,674 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:32:07,700 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:12,700 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:13,983 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:32:13,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:32:18,151 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:18,679 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:32:20,577 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:32:20,577 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:32:20,601 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:32:20,602 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:32:20,603 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:32:20,680 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:32:23,605 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:28,605 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:28,756 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:32:28,983 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:32:28,984 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:32:34,103 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:34,182 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:32:34,184 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:32:34,189 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:32:34,190 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:32:34,190 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:32:34,686 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:32:39,191 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:43,983 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:32:43,983 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:32:45,137 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:47,690 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:32:47,693 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:32:47,697 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:32:47,699 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:32:47,703 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end
+2024-05-12 16:32:48,700 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/wandb-summary.json
+2024-05-12 16:32:50,709 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:51,701 INFO    Thread-12 :1683154 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/healthcare/ray_results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/wandb/run-20240512_162728-2b391_00000/files/config.yaml
+2024-05-12 16:32:55,827 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:32:58,758 DEBUG   SenderThread:1683154 [sender.py:send():378] send: stats
+2024-05-12 16:32:58,983 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: stop_status
+2024-05-12 16:32:58,984 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: stop_status
+2024-05-12 16:33:01,129 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: status_report
+2024-05-12 16:33:01,992 DEBUG   HandlerThread:1683154 [handler.py:handle_request():158] handle_request: partial_history
+2024-05-12 16:33:01,997 DEBUG   SenderThread:1683154 [sender.py:send():378] send: config
+2024-05-12 16:33:01,999 DEBUG   SenderThread:1683154 [sender.py:send():378] send: history
+2024-05-12 16:33:02,000 DEBUG   SenderThread:1683154 [sender.py:send_request():405] send_request: summary_record
+2024-05-12 16:33:02,002 INFO    SenderThread:1683154 [sender.py:_save_file():1389] saving file wandb-summary.json with policy end

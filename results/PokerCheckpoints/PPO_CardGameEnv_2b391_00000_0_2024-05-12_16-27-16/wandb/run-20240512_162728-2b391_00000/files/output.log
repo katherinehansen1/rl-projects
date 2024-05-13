@@ -1,0 +1,4 @@
+
+wandb: Adding directory to artifact (/home/healthcare/Desktop/Tristan/rl-projects/results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/checkpoint_000000)... Done. 0.0s
+wandb: Adding directory to artifact (/home/healthcare/Desktop/Tristan/rl-projects/results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/checkpoint_000001)... Done. 0.0s
+wandb: Adding directory to artifact (/home/healthcare/Desktop/Tristan/rl-projects/results/PPO_2024-05-12_16-27-16/PPO_CardGameEnv_2b391_00000_0_2024-05-12_16-27-16/checkpoint_000002)... Done. 0.0s

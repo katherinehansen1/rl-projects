@@ -1,0 +1,193 @@
+{
+    "os": "Linux-5.15.0-79-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "heartbeatAt": "2024-05-12T23:27:28.775430",
+    "startedAt": "2024-05-12T23:27:28.221588",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--node-ip-address=206.211.132.160",
+        "--node-manager-port=42573",
+        "--object-store-name=/tmp/ray/session_2024-05-12_16-27-11_796891_1676274/sockets/plasma_store",
+        "--raylet-name=/tmp/ray/session_2024-05-12_16-27-11_796891_1676274/sockets/raylet",
+        "--redis-address=None",
+        "--temp-dir=/tmp/ray",
+        "--metrics-agent-port=56937",
+        "--runtime-env-agent-port=58835",
+        "--logging-rotate-bytes=536870912",
+        "--logging-rotate-backup-count=5",
+        "--runtime-env-agent-port=58835",
+        "--gcs-address=206.211.132.160:62671",
+        "--session-name=session_2024-05-12_16-27-11_796891_1676274",
+        "--temp-dir=/tmp/ray",
+        "--webui=",
+        "--cluster-id=47ea5f21cb67bfa448f5d74a50047be7bfb12507e0349eba5288b59d",
+        "--startup-token=30",
+        "--worker-launch-time-ms=1715556443822",
+        "--runtime-env-hash=-1068589896"
+    ],
+    "state": "running",
+    "program": "/home/healthcare/.local/lib/python3.10/site-packages/ray/_private/workers/default_worker.py",
+    "codePathLocal": null,
+    "host": "ESI-lambda-quad-01",
+    "username": "healthcare",
+    "executable": "/bin/python",
+    "cpu_count": 12,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3.0686250000000004,
+        "min": 1200.0,
+        "max": 4316.666666666667
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3.131,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.389,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.799,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.799,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.799,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.799,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 1.342,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3.12,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4400.0
+        },
+        {
+            "current": 2.9,
+            "min": 1200.0,
+            "max": 4300.0
+        },
+        {
+            "current": 1.199,
+            "min": 1200.0,
+            "max": 4300.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1832.2072448730469,
+            "used": 1419.418228149414
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        },
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 125.46464538574219
+    }
+}
