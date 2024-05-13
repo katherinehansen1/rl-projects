@@ -217,7 +217,7 @@ class CodersStrikeBackMultiBase:
         self.gamePixelHeight = 9000.
         self.checkpoint_radius = 600
         self.num_racers_per_team = 2
-        self.num_teams = 2
+        self.num_teams = 3
         self.racers = []
         self.checkpoints = self.sample_checkpoints(self.max_checkpoints)
         self.viewer = None
